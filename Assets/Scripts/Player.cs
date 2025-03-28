@@ -1,12 +1,12 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
     public int money;
-    public Dictionary<string, int> SeedInventory = new Dictionary<string, int> {
-        { "Fern_Seed", 0} 
-    }; // expandable
+    public string[] seedInventory = {"FernSeed", "SeedTwo"}; // [FernSeed, ...]; expandable
+    private int currentSeedIndex;
     private Vector3 currentPos;
     public Bug[] bugInventory;
     public Dictionary<string, int> currentSeed;
@@ -15,7 +15,7 @@ public class Player : MonoBehaviour
 
     }
 
-    private void PlantSeed(Dictionary<string, int> currentSeed) {
+    private void PlantSeed(int currentSeedIndex) {
 
     }
 

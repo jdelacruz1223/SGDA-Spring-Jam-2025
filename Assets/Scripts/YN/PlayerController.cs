@@ -42,6 +42,7 @@ public class PlayerController : MonoBehaviour
         TryMove();
     }
 
+#region Movemnent
     public void TryMove(){
         if(moveHeld){
             speedUp();
@@ -82,4 +83,12 @@ public class PlayerController : MonoBehaviour
         }
         speed *= deceleration;
     }
+    #endregion
+
+    #region Inventory
+    public void OnInventory(InputAction.CallbackContext ctx) {
+        //control which seed is chosen
+    }
+    #endregion
+
 }
