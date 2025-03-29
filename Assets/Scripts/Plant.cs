@@ -1,7 +1,7 @@
 using UnityEngine;
 using UnityEngine.UI;
 
-public class Plant : MonoBehaviour
+public class Plant : MonoBehaviour, IInteractable
 {
     private enum AgeState { Sprout, Mature }
     public enum PlantType { Fern } // expandable
@@ -20,6 +20,14 @@ public class Plant : MonoBehaviour
         hasBug = false;
         // might put more here later
     }
+#region IInteractable
+    [SerializeField] private string _prompt;
+    public string InteractionPrompt => _prompt;
+    public bool Interact(PlayerController playerController) {
+        Debug.Log("Plant Interacted!");
+        return true;
+    }
+#endregion
 
     private void SetModel() {
         if (currentAge == 0) {
@@ -47,10 +55,6 @@ public class Plant : MonoBehaviour
 
     private void Update() {
         SetModel();
-        if(!spawnedOnce) {
-            SpawnNewBug(currentAge);
-            spawnedOnce = true;
-        }
         if (Input.GetKeyDown(KeyCode.L)) {
             currentAge = AgeState.Mature;
             spawnedOnce = false;
@@ -61,16 +65,5 @@ public class Plant : MonoBehaviour
             spawnedOnce = false;
             Debug.Log(currentAge);
         }
-        if (Input.GetKeyDown(KeyCode.J)) {
-            if (bug != null) {
-                Destroy(bug);
-                bug = null;
-                Debug.Log("setting bug to " + bug.ToString());
-                hasBug = false;
-                spawnedOnce = false;
-                Debug.Log("Bug Taken");
-            }
-        }
     }
-
 }

@@ -56,5 +56,9 @@
         "temp/": true,
         "Temp/": true
     },
-    "dotnet.defaultSolution": "SGDA-Spring-Jam-2025.sln"
+    "dotnet.defaultSolution": "SGDA-Spring-Jam-2025.sln",
+    "editor.tokenColorCustomizations": {
+        "comments": "",
+        "textMateRules": []
+    }
 }
