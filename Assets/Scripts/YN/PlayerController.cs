@@ -1,12 +1,13 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
 
-interface IInteractable {
+interface IInteractable
+{
     public string InteractionPrompt { get; }
     public bool Interact(PlayerController playerController) { throw new System.NotImplementedException(); }
 }
 public class PlayerController : MonoBehaviour
-{  
+{
     /// <summary>
     /// Maximum speed player can reach
     /// </summary>
@@ -43,11 +44,11 @@ public class PlayerController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if(cc == null) cc = GetComponent<CharacterController>();
+        if (cc == null) cc = GetComponent<CharacterController>();
         GetComponent<CameraController>().target = gameObject;
         Cursor.lockState = CursorLockMode.Locked; //lock cursor to play window
         Cursor.visible = false; //make cursor invisible
-        
+
     }
 
     // Update is called once per frame
@@ -64,29 +65,36 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// Attempt to move the player
     /// </summary>
-    public void TryMove(){
-        if(moveHeld){
+    public void TryMove()
+    {
+        if (moveHeld)
+        {
             speedUp();
         }
-        else{
+        else
+        {
             speedDown();
         }
-        speed *= sprintHeld?sprintMultipler:1;
-        var dir = transform.forward*speed*moveDir.y + transform.right*speed*moveDir.x;
-        cc.Move(dir*Time.deltaTime);
+        speed *= sprintHeld ? sprintMultipler : 1;
+        var dir = transform.forward * speed * moveDir.y + transform.right * speed * moveDir.x;
+        cc.Move(dir * Time.deltaTime);
     }
 
     /// <summary>
     /// Called when a movement action updated
     /// </summary>
     /// <param name="ctx">The context of the input action</param>
-    public void OnMove(InputAction.CallbackContext ctx){
-        if(ctx.canceled){
+    public void OnMove(InputAction.CallbackContext ctx)
+    {
+        if (ctx.canceled)
+        {
             moveHeld = false;
         }
-        else{
+        else
+        {
             var newDir = ctx.ReadValue<Vector2>();
-            if (newDir.normalized != moveDir.normalized){ //if the new direction is different from the old direction
+            if (newDir.normalized != moveDir.normalized)
+            { //if the new direction is different from the old direction
                 //speed = 0;
             }
             moveHeld = true;
@@ -98,19 +106,23 @@ public class PlayerController : MonoBehaviour
     /// Called when sprint action updated
     /// </summary>
     /// <param name="ctx">The context of the input action</param>
-    public void OnSprint(InputAction.CallbackContext ctx){
+    public void OnSprint(InputAction.CallbackContext ctx)
+    {
         sprintHeld = !ctx.canceled;
     }
 
     /// <summary>
     /// Increase the player's speed until speed reaches maxSpeed
     /// </summary>
-    void speedUp(){
-        if(speed == 0){
+    void speedUp()
+    {
+        if (speed == 0)
+        {
             speed = 0.1f;
         }
         speed *= acceleration;
-        if(speed >= maxSpeed){
+        if (speed >= maxSpeed)
+        {
             speed = maxSpeed;
         }
     }
@@ -118,9 +130,11 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// Slow down the player until the speed is 0
     /// </summary>
-    void speedDown(){
+    void speedDown()
+    {
         speed *= deceleration;
-        if(speed <= 0.01){
+        if (speed <= 0.01)
+        {
             speed = 0;
         }
     }
@@ -129,13 +143,14 @@ public class PlayerController : MonoBehaviour
     /// Called when a look action updated
     /// </summary>
     /// <param name="ctx">The context of the input action</param>
-    public void OnLook (InputAction.CallbackContext ctx){
+    public void OnLook(InputAction.CallbackContext ctx)
+    {
         var rot = ctx.ReadValue<Vector2>();
-        transform.Rotate(Vector3.up, rot.x*Time.deltaTime);
+        transform.Rotate(Vector3.up, rot.x * Time.deltaTime);
     }
-#endregion
+    #endregion
 
-#region Interaction - Justin
+    #region Interaction - Justin
     [SerializeField] private Transform _interactionPoint;
     [SerializeField] private float _interactionPointRadius = 0.5f;
     [SerializeField] private LayerMask _interactableMask;
@@ -145,23 +160,38 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// Called when Interact action is performed.
     /// </summary>
-    public void OnInteract(InputAction.CallbackContext ctx) {
-        if (ctx.started) {
-            if (_numFound > 0) {
+    public void OnInteract(InputAction.CallbackContext ctx)
+    {
+        if (ctx.started)
+        {
+            if (_numFound > 0)
+            {
                 var interactable = _colliders[0].GetComponent<IInteractable>();
-                if (interactable != null) {
+                if (interactable != null)
+                {
                     interactable.Interact(this);
+
+
                 }
             }
+        }
+    }
+
+    private void OnTriggerExit(Collider other)
+    {
+        if (other.tag == "NPC")
+        {
+            other.GetComponent<InteractUI>().AutoClose();
         }
     }
 
     /// <summary>
     /// Draws WireSpheres of the Interaction radius
     /// </summary>
-    private void OnDrawGizmos() {
+    private void OnDrawGizmos()
+    {
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(_interactionPoint.position, _interactionPointRadius);
     }
-#endregion
+    #endregion
 }
