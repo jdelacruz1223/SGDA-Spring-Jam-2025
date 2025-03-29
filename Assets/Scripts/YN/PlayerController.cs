@@ -7,6 +7,10 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     [SerializeField] float maxSpeed;
     /// <summary>
+    /// How much to multiply speed when sprinting?
+    /// </summary>
+    [SerializeField] float sprintMultipler;
+    /// <summary>
     /// Current speed of player
     /// </summary>
     float speed;
@@ -14,6 +18,7 @@ public class PlayerController : MonoBehaviour
     /// Are the movement buttons held?
     /// </summary>
     bool moveHeld = false;
+    bool sprintHeld = false;
     /// <summary>
     /// The current direction of movement
     /// </summary>
@@ -34,6 +39,9 @@ public class PlayerController : MonoBehaviour
     void Start()
     {
         if(cc == null) cc = GetComponent<CharacterController>();
+        GetComponent<CameraController>().target = gameObject;
+        Cursor.lockState = CursorLockMode.Locked; //lock cursor to play window
+        Cursor.visible = false; //make cursor invisible
     }
 
     // Update is called once per frame
@@ -42,7 +50,9 @@ public class PlayerController : MonoBehaviour
         TryMove();
     }
 
-#region Movemnent
+    /// <summary>
+    /// Attempt to move the player
+    /// </summary>
     public void TryMove(){
         if(moveHeld){
             speedUp();
@@ -50,10 +60,15 @@ public class PlayerController : MonoBehaviour
         else{
             speedDown();
         }
-        var dir = new Vector3(speed*moveDir.x, 0 , speed*moveDir.y);
+        speed *= sprintHeld?sprintMultipler:1;
+        var dir = transform.forward*speed*moveDir.y + transform.right*speed*moveDir.x;
         cc.Move(dir*Time.deltaTime);
     }
 
+    /// <summary>
+    /// Called when a movement action updated
+    /// </summary>
+    /// <param name="ctx">The context of the input action</param>
     public void OnMove(InputAction.CallbackContext ctx){
         if(ctx.canceled){
             moveHeld = false;
@@ -68,27 +83,43 @@ public class PlayerController : MonoBehaviour
         }
     }
 
-    public void speedUp(){
+    /// <summary>
+    /// Called when sprint action updated
+    /// </summary>
+    /// <param name="ctx">The context of the input action</param>
+    public void OnSprint(InputAction.CallbackContext ctx){
+        sprintHeld = !ctx.canceled;
+    }
+
+    /// <summary>
+    /// Increase the player's speed until speed reaches maxSpeed
+    /// </summary>
+    void speedUp(){
+        if(speed == 0){
+            speed = 0.1f;
+        }
+        speed *= acceleration;
         if(speed >= maxSpeed){
             speed = maxSpeed;
-            return;
         }
-        speed += acceleration; //TODO this is linear only because of the edge case that speed can be 0 prevents 'acceleration' from being exponential like deceleartion
     }
 
-    public void speedDown(){
+    /// <summary>
+    /// Slow down the player until the speed is 0
+    /// </summary>
+    void speedDown(){
+        speed *= deceleration;
         if(speed <= 0.01){
             speed = 0;
-            return;
         }
-        speed *= deceleration;
     }
-    #endregion
 
-    #region Inventory
-    public void OnInventory(InputAction.CallbackContext ctx) {
-        //control which seed is chosen
+    /// <summary>
+    /// Called when a look action updated
+    /// </summary>
+    /// <param name="ctx">The context of the input action</param>
+    public void OnLook (InputAction.CallbackContext ctx){
+        var rot = ctx.ReadValue<Vector2>();
+        transform.Rotate(Vector3.up, rot.x*Time.deltaTime);
     }
-    #endregion
-
 }
