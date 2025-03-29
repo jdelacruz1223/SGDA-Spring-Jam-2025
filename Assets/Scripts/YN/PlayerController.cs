@@ -54,7 +54,8 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         TryMove(); 
-        _numFound = Physics.OverlapSphereNonAlloc(_interactionPoint.position, _interactionPointRadius, _colliders, _interactableMask);       
+        _numFound = Physics.OverlapSphereNonAlloc(_interactionPoint.position, _interactionPointRadius, _colliders, _interactableMask); 
+              
     }
 
 #region Movement
