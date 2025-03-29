@@ -1,5 +1,10 @@
 using UnityEngine;
 using UnityEngine.InputSystem;
+
+interface IInteractable {
+    public string InteractionPrompt { get; }
+    public bool Interact(PlayerController playerController) { throw new System.NotImplementedException(); }
+}
 public class PlayerController : MonoBehaviour
 {  
     /// <summary>
@@ -42,13 +47,17 @@ public class PlayerController : MonoBehaviour
         GetComponent<CameraController>().target = gameObject;
         Cursor.lockState = CursorLockMode.Locked; //lock cursor to play window
         Cursor.visible = false; //make cursor invisible
+        
     }
 
     // Update is called once per frame
     void Update()
     {
-        TryMove();
+        TryMove(); 
+        _numFound = Physics.OverlapSphereNonAlloc(_interactionPoint.position, _interactionPointRadius, _colliders, _interactableMask);       
     }
+
+#region Movement
 
     /// <summary>
     /// Attempt to move the player
@@ -122,4 +131,35 @@ public class PlayerController : MonoBehaviour
         var rot = ctx.ReadValue<Vector2>();
         transform.Rotate(Vector3.up, rot.x*Time.deltaTime);
     }
+#endregion
+
+#region Interaction - Justin
+    [SerializeField] private Transform _interactionPoint;
+    [SerializeField] private float _interactionPointRadius = 0.5f;
+    [SerializeField] private LayerMask _interactableMask;
+    [SerializeField] private int _numFound;
+    private readonly Collider[] _colliders = new Collider[3];
+
+    /// <summary>
+    /// Called when Interact action is performed.
+    /// </summary>
+    public void OnInteract(InputAction.CallbackContext ctx) {
+        if (ctx.started) {
+            if (_numFound > 0) {
+                var interactable = _colliders[0].GetComponent<IInteractable>();
+                if (interactable != null) {
+                    interactable.Interact(this);
+                }
+            }
+        }
+    }
+
+    /// <summary>
+    /// Draws WireSpheres of the Interaction radius
+    /// </summary>
+    private void OnDrawGizmos() {
+        Gizmos.color = Color.yellow;
+        Gizmos.DrawWireSphere(_interactionPoint.position, _interactionPointRadius);
+    }
+#endregion
 }

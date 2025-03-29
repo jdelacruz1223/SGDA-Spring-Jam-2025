@@ -1,22 +1,24 @@
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.InputSystem;
 
 public class Player : MonoBehaviour
 {
     public int money;
-    public Dictionary<string, int> SeedInventory = new Dictionary<string, int> {
-        { "Fern_Seed", 0} 
-    }; // expandable
+    [SerializeField] public string[] seedInventory = {"FernSeed", "SeedTwo"}; // [FernSeed, ...]; expandable
+    private int currentSeedIndex;
     private Vector3 currentPos;
     public Bug[] bugInventory;
     public Dictionary<string, int> currentSeed;
+    [SerializeField] public GameObject plantPrefab;
+    [SerializeField] public float plantingOffset;
 
     private void TakeBug(Plant plant) {
 
     }
 
-    private void PlantSeed(Dictionary<string, int> currentSeed) {
-
+    private void PlantSeed(int currentSeedIndex) {
+        Instantiate(plantPrefab, transform.position + transform.forward * plantingOffset, Quaternion.identity);
     }
 
 }
