@@ -12,8 +12,11 @@ public class Plant : MonoBehaviour, IInteractable
     [SerializeField] private GameObject model; // assign in editor
     [SerializeField] private GameObject bugPrefab;
     [SerializeField] private float bugSpawnDelay;
+    private BoxCollider boxCollider;
 
     void Start() {
+        boxCollider = gameObject.GetComponent<BoxCollider>();
+        boxCollider.enabled = false;
         StartCoroutine(BugSpawnTimer());
     }
 
@@ -42,11 +45,13 @@ public class Plant : MonoBehaviour, IInteractable
 #endregion
 
     private void SetModel() {
-        if (currentAge == 0) {
+        if (currentAge == AgeState.Sprout) {
             model.SetActive(false);
+            boxCollider.enabled = false;
             return;
         }
         model.SetActive(true);
+        boxCollider.enabled = true;
     }
 
 #region Bug Handling
@@ -74,7 +79,11 @@ public class Plant : MonoBehaviour, IInteractable
             return;
         }
     }
-    #endregion
+#endregion
+
+#region UI
+
+#endregion
 
 
     private void Update() {
