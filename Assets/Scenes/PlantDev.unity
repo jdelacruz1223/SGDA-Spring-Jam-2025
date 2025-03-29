@@ -487,9 +487,17 @@ PrefabInstance:
     m_TransformParent: {fileID: 0}
     m_Modifications:
     - target: {fileID: 1118195516180749576, guid: 99ee668d16429884d87c2cfcbba2af15, type: 3}
+      propertyPath: _prompt
+      value: hi
+      objectReference: {fileID: 0}
+    - target: {fileID: 1118195516180749576, guid: 99ee668d16429884d87c2cfcbba2af15, type: 3}
       propertyPath: bugPrefab
       value: 
       objectReference: {fileID: 3063979598834997444, guid: 3378a57e10331ee4f80dfced80227193, type: 3}
+    - target: {fileID: 1118195516180749576, guid: 99ee668d16429884d87c2cfcbba2af15, type: 3}
+      propertyPath: bugSpawnDelay
+      value: 2
+      objectReference: {fileID: 0}
     - target: {fileID: 5489698636022087705, guid: 99ee668d16429884d87c2cfcbba2af15, type: 3}
       propertyPath: m_LocalPosition.x
       value: 0
@@ -533,10 +541,6 @@ PrefabInstance:
     - target: {fileID: 7269355866624985034, guid: 99ee668d16429884d87c2cfcbba2af15, type: 3}
       propertyPath: m_Name
       value: Plant
-      objectReference: {fileID: 0}
-    - target: {fileID: 7269355866624985034, guid: 99ee668d16429884d87c2cfcbba2af15, type: 3}
-      propertyPath: m_Layer
-      value: 6
       objectReference: {fileID: 0}
     m_RemovedComponents: []
     m_RemovedGameObjects: []
