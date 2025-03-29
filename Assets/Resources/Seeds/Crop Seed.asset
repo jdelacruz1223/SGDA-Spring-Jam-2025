@@ -9,12 +9,12 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 83c47ccdb7be7284aa5aa3b9ced5509f, type: 3}
+  m_Script: {fileID: 11500000, guid: f664cd8f06781cf44937c6e50e5ba464, type: 3}
   m_Name: Crop Seed
   m_EditorClassIdentifier: 
   seedData:
-    id: 3
+    id: 2
     name: Crop Seed
-    price: 10
+    price: 15
     amount: 1
     seedType: 0

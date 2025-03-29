@@ -22,7 +22,6 @@ public class ShopManager : MonoBehaviour
 
             GameObject item = Instantiate(ItemTemplate, BuyContent.transform);
             item.GetComponentInChildren<TextMeshProUGUI>().text = seed.seedData.name;
-
             item.SetActive(true);
         }
     }
