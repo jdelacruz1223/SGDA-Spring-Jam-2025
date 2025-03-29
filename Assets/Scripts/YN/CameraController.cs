@@ -4,10 +4,6 @@ using UnityEngine.InputSystem;
 public class CameraController : MonoBehaviour
 {
     /// <summary>
-    /// Refernece to camera to control
-    /// </summary>
-    GameObject cam;
-    /// <summary>
     /// Target that camera should move towards
     /// </summary>
     public GameObject target;
@@ -31,16 +27,13 @@ public class CameraController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
     void Start()
     {
-        if(cam == null){
-            cam = GameObject.FindGameObjectWithTag("MainCamera");
-        }
     }
 
     // Update is called once per frame
     void Update()
     {
         var target_pos = target.transform.position - target.transform.forward * distance + Vector3.up * height;
-        cam.transform.position = Vector3.SmoothDamp(cam.transform.position, target_pos, ref vel, smoothing);
-        cam.transform.LookAt(target.transform);
+        Camera.main.transform.position = Vector3.SmoothDamp(Camera.main.transform.position, target_pos, ref vel, smoothing);
+        Camera.main.transform.LookAt(target.transform);
     }
 }

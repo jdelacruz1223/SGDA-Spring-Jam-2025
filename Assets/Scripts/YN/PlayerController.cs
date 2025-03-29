@@ -53,12 +53,14 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        TryMove(); 
         _numFound = Physics.OverlapSphereNonAlloc(_interactionPoint.position, _interactionPointRadius, _colliders, _interactableMask);       
     }
 
-#region Movement
-
+    #region Movement
+    void FixedUpdate()
+    {
+        TryMove();
+    }
     /// <summary>
     /// Attempt to move the player
     /// </summary>
