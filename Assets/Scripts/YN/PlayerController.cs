@@ -53,7 +53,8 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        TryMove();        
+        TryMove(); 
+        _numFound = Physics.OverlapSphereNonAlloc(_interactionPoint.position, _interactionPointRadius, _colliders, _interactableMask);       
     }
 
 #region Movement
@@ -143,9 +144,7 @@ public class PlayerController : MonoBehaviour
     /// Called when Interact action is performed.
     /// </summary>
     public void OnInteract(InputAction.CallbackContext ctx) {
-        Debug.Log("OnInteract");
-        if (ctx.phase == InputActionPhase.Performed) {
-            _numFound = Physics.OverlapSphereNonAlloc(_interactionPoint.position, _interactionPointRadius, _colliders, _interactableMask);
+        if (ctx.started) {
             if (_numFound > 0) {
                 var interactable = _colliders[0].GetComponent<IInteractable>();
                 if (interactable != null) {
