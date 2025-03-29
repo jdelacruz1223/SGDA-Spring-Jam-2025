@@ -1,5 +1,6 @@
 using UnityEngine;
 using System.Collections.Generic;
+using System.Collections.ObjectModel;
 
 /// <summary>
 /// Manages all game data including player currency, inventory, plants, and bugs.
@@ -14,8 +15,8 @@ public class GameDataManager : MonoBehaviour
 
     [Header("Progression")]
     public int gardenLevel = 1;
-    public List<string> discoveredBugTypes = new List<string>();
-    public List<string> discoveredPlantTypes = new List<string>();
+    public ObservableCollection<BugModel> discoveredBugTypes = new ObservableCollection<BugModel>();
+    public ObservableCollection<SeedModel> discoveredSeedTypes = new ObservableCollection<SeedModel>();
 
     [Header("Statistics")]
     public int totalBugsCaught;
@@ -38,7 +39,7 @@ public class GameDataManager : MonoBehaviour
 
     private void InitializeGameData()
     {
-        
+
     }
 
     public bool CanAfford(int amount)
