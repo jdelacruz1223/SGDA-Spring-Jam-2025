@@ -23,8 +23,6 @@ public class ShopManager : MonoBehaviour
 
     private Item[] sortedSeeds;
 
-    JSONManager jsonManager;
-
     public static ShopManager GetInstance() { return me; }
     public static ShopManager me;
     void Awake()
@@ -40,10 +38,16 @@ public class ShopManager : MonoBehaviour
 
     void Start()
     {
+        SeedModel[] seeds = JSONManager.GetInstance().GetSeedTypes();
 
-        SeedModel[] seeds = jsonManager.GetSeedTypes();
-
-        sortedSeeds = seeds.OrderBy(s => s.seedData.price).ToArray();
+        sortedSeeds = seeds.Select(seed =>
+        {
+            Item item = ScriptableObject.CreateInstance<Item>();
+            item.type = ItemType.Seed;
+            item.image = Resources.Load<Sprite>("Seeds/" + seed.plantId);
+            item.seedData = seed;
+            return item;
+        }).OrderBy(s => s.seedData.price).ToArray();
 
         foreach (Item seed in sortedSeeds)
         {
@@ -72,11 +76,6 @@ public class ShopManager : MonoBehaviour
         UpdateShopUI();
     }
 
-    void Update()
-    {
-
-    }
-
     public void UpdateShopUI()
     {
         currencyTxt.text = GameDataManager.GetInstance().playerCurrency + " coins";
@@ -84,6 +83,8 @@ public class ShopManager : MonoBehaviour
 
     public void ShopIntro()
     {
+        InventoryManager.GetInstance().HideToolbar();
+        ShopPanelRect.DOKill();
         ShopPanelRect.DOAnchorPosY(0, tweenDuration).SetUpdate(true);
         Cursor.lockState = CursorLockMode.Confined;
         Cursor.visible = true;
@@ -92,8 +93,11 @@ public class ShopManager : MonoBehaviour
 
     async public void ShopOutro()
     {
+
+        InventoryManager.GetInstance().ShowToolbar();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        ShopPanelRect.DOKill();
         await Task.Run(async () => await ShopPanelRect.DOAnchorPosY(430, tweenDuration).SetUpdate(true).AsyncWaitForCompletion());
         ShopPanelRect.gameObject.SetActive(false);
     }

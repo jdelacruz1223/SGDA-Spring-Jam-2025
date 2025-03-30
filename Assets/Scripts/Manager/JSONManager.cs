@@ -7,28 +7,42 @@ public class JSONManager : MonoBehaviour
     public PlantData plantData;
     public BugData bugData;
     public SeedData seedData;
-    
+
+    public static JSONManager GetInstance() { return me; }
+    public static JSONManager me;
+
 
     void Awake()
     {
+        if (me != null)
+        {
+            Destroy(gameObject);
+            return;
+        }
+
+        me = this;
         LoadData();
     }
 
     void Start()
     {
         Debug.Log(GetPlantTypes().ToString());
-        
-        if (plantDatabase == null) {
+
+        if (plantDatabase == null)
+        {
             Debug.LogError("plantDatabase is null after LoadData(). Check JSON structure.");
-        return; 
+            return;
         }
     }
 
-    public void LoadData() {
+    public void LoadData()
+    {
         TextAsset jsonFile = Resources.Load<TextAsset>("gameData");
-        if (jsonFile != null) {
+        if (jsonFile != null)
+        {
             plantDatabase = JsonUtility.FromJson<PlantDatabase>(jsonFile.text);
-            if (plantDatabase == null) {
+            if (plantDatabase == null)
+            {
                 Debug.LogError("Failed to parse gameData.json into PlantDatabase.");
                 return;
             }
@@ -40,30 +54,57 @@ public class JSONManager : MonoBehaviour
             bugData.bugTypes = plantDatabase.bugs.ToArray();
             seedData.seedTypes = plantDatabase.seeds.ToArray();
 
-        } else Debug.LogError("gameData.json not found");
+        }
+        else Debug.LogError("gameData.json not found");
 
         Debug.Log($"{GetPlantTypes()}, {GetSeedTypes()}, {GetBugTypes()}");
     }
 
-    public PlantModel[] GetPlantTypes() {
+    public PlantModel[] GetPlantTypes()
+    {
         return plantDatabase.plants.ToArray();
     }
-    public SeedModel[] GetSeedTypes() {
+    public SeedModel[] GetSeedTypes()
+    {
         return plantDatabase.seeds.ToArray();
     }
-    public BugModel[] GetBugTypes() {
+    public BugModel[] GetBugTypes()
+    {
         return plantDatabase.bugs.ToArray();
+    }
+
+    public PlantModel GetPlantById(string id)
+    {
+        if (plantDatabase == null || plantDatabase.plants == null)
+        {
+            Debug.LogError("Plant database or plants list is null");
+            return null;
+        }
+
+        foreach (PlantModel plant in plantDatabase.plants)
+        {
+            if (plant.id == id)
+            {
+                return plant;
+            }
+        }
+
+        Debug.LogWarning($"No plant found with id: {id}");
+        return null;
     }
 }
 
 [System.Serializable]
-public class PlantData {
+public class PlantData
+{
     public PlantModel[] plantTypes;
 }
-public class SeedData { 
+public class SeedData
+{
     public SeedModel[] seedTypes;
 }
-public class BugData {
+public class BugData
+{
     public BugModel[] bugTypes;
 }
 

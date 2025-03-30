@@ -12,6 +12,7 @@ public class InventoryManager : MonoBehaviour
     [Header("Animations")]
     public RectTransform ToolbarRect;
     public RectTransform MainInventorRect;
+    public CanvasGroup DarkBackground;
     [SerializeField] public float tweenDuration = 0.5f;
 
     public static InventoryManager GetInstance() { return me; }
@@ -120,21 +121,30 @@ public class InventoryManager : MonoBehaviour
 
     public void InventoryIntro()
     {
+        DarkBackground.alpha = 0;
+        DarkBackground.DOFade(1, tweenDuration).SetUpdate(true);
 
+        MainInventorRect.anchoredPosition = new Vector2(0, 430);
+        MainInventorRect.DOKill();
+        MainInventorRect.DOAnchorPosY(0, tweenDuration).SetUpdate(true);
     }
 
-    public void InventoryOutro()
+    public async Task InventoryOutro()
     {
-
+        DarkBackground.DOFade(0, tweenDuration).SetUpdate(true);
+        MainInventorRect.DOKill();
+        await MainInventorRect.DOAnchorPosY(430, tweenDuration).SetUpdate(true).AsyncWaitForCompletion();
     }
 
     public void ShowToolbar()
     {
+        ToolbarRect.DOKill();
         ToolbarRect.DOAnchorPosY(0, tweenDuration).SetUpdate(true);
     }
 
     public void HideToolbar()
     {
+        ToolbarRect.DOKill();
         ToolbarRect.DOAnchorPosY(-75, tweenDuration).SetUpdate(true);
     }
 }

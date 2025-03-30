@@ -10,7 +10,6 @@ public class Item : ScriptableObject
     public bool Stackable = true;
     public int maxStack = 64;
     public ItemType type;
-    public ActionType actionType;
 
     [Header("Type Information")]
     public SeedModel seedData;
@@ -21,9 +20,4 @@ public enum ItemType
 {
     Seed,
     Bug
-}
-
-public enum ActionType
-{
-    Plant
 }

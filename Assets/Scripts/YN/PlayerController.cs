@@ -1,5 +1,7 @@
+using System.Threading;
 using System.Threading.Tasks;
 using UnityEditor;
+using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -63,7 +65,7 @@ public class PlayerController : MonoBehaviour
     }
 
 
-#region Movement
+    #region Movement
 
     /// <summary>
     /// Attempt to move the player
@@ -151,9 +153,9 @@ public class PlayerController : MonoBehaviour
         var rot = ctx.ReadValue<Vector2>();
         transform.Rotate(Vector3.up, rot.x * Time.deltaTime);
     }
-#endregion
+    #endregion
 
-#region Interaction
+    #region Interaction
     [SerializeField] private Transform _interactionPoint;
     [SerializeField] private float _interactionPointRadius = 0.5f;
     [SerializeField] private LayerMask _interactableMask;
@@ -183,7 +185,6 @@ public class PlayerController : MonoBehaviour
         if (other.tag == "NPC")
         {
             ShopManager.GetInstance().ShopOutro();
-            InventoryManager.GetInstance().ShowToolbar();
         }
     }
 
@@ -195,13 +196,15 @@ public class PlayerController : MonoBehaviour
         Gizmos.color = Color.yellow;
         Gizmos.DrawWireSphere(_interactionPoint.position, _interactionPointRadius);
     }
-#endregion
+    #endregion
 
-#region Planting
+    #region Planting
     [SerializeField] private GameObject plantPrefab;
-    public void OnPlantSeed(InputAction.CallbackContext ctx) {
+    public void OnPlantSeed(InputAction.CallbackContext ctx)
+    {
         // possible edge case: what happens when slot is empty or not a bug?
-        if (ctx.started) {
+        if (ctx.started)
+        {
             UseSelectedItem();
         }
     }
@@ -210,30 +213,39 @@ public class PlayerController : MonoBehaviour
     {
         Item receivedItem = InventoryManager.GetInstance().GetSelectedItem(true);
 
-        if (receivedItem != null)
-            Debug.Log("Used Item " + receivedItem.name);
-            //spawn
-        else
-            Debug.Log("No Items");
+        if (receivedItem.type == ItemType.Seed)
+        {
+            SeedPlanter planter = GetComponent<SeedPlanter>();
+            planter.PlantSeed(receivedItem.seedData, transform.position);
+        }
     }
-#endregion
+    #endregion
 
-#region Inventory
-    public void OnInventory(InputAction.CallbackContext ctx) {
+    #region Inventory
+    public async void OnInventory(InputAction.CallbackContext ctx)
+    {
+        if (!ctx.started) return;
+
+        ShopManager.GetInstance().ShopOutro();
+
         Debug.Log("InventoryPressed");
-        // bounded to E, open inventory
         if (inventoryUI.activeSelf)
-            {
-                inventoryUI.SetActive(false);
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
-            }
-            else
-            {
-                inventoryUI.SetActive(true);
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-            }
-    } 
-#endregion
+        {
+            Cursor.visible = false;
+            Cursor.lockState = CursorLockMode.Locked;
+
+            await InventoryManager.GetInstance().InventoryOutro();
+            await Task.Delay(50);
+            inventoryUI.SetActive(false);
+        }
+        else
+        {
+            Cursor.lockState = CursorLockMode.None;
+            inventoryUI.SetActive(true);
+            await Task.Delay(50);
+            InventoryManager.GetInstance().InventoryIntro();
+            Cursor.visible = true;
+        }
+    }
+    #endregion
 }

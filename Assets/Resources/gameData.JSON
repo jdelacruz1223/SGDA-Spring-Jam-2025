@@ -6,7 +6,7 @@
       "plantId": "plant_daisy",
       "stackable": true,
       "price": 5,
-      "growthTime": 120,
+      "growthTime": 10,
       "description": "Grows into a beautiful Daisy Flower."
     }
   ],

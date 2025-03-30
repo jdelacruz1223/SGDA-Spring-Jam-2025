@@ -833,21 +833,9 @@ MonoBehaviour:
   m_OnClick:
     m_PersistentCalls:
       m_Calls:
-      - m_Target: {fileID: 121498893846312852}
-        m_TargetAssemblyTypeName: UnityEngine.GameObject, UnityEngine
-        m_MethodName: SetActive
-        m_Mode: 6
-        m_Arguments:
-          m_ObjectArgument: {fileID: 0}
-          m_ObjectArgumentAssemblyTypeName: UnityEngine.Object, UnityEngine
-          m_IntArgument: 0
-          m_FloatArgument: 0
-          m_StringArgument: 
-          m_BoolArgument: 0
-        m_CallState: 2
-      - m_Target: {fileID: 8005161873271450391, guid: 039bc9df2c87aaa4d90efbbb7afa0035, type: 3}
-        m_TargetAssemblyTypeName: InteractUI, Assembly-CSharp
-        m_MethodName: AutoClose
+      - m_Target: {fileID: 1091017835383851478, guid: dcf6107c53d2c0c499c01d6225435c4a, type: 3}
+        m_TargetAssemblyTypeName: ShopManager, Assembly-CSharp
+        m_MethodName: ShopOutro
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
