@@ -739,6 +739,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 5f54996d3ace2463781177e6525e1517, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  instructions: {fileID: 1622288471}
   howToShowText: {fileID: 308017254}
   instructionBackground: {fileID: 822199045}
   pressToShow: Press Tab to show instructions
