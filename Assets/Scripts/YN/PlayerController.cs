@@ -62,16 +62,6 @@ public class PlayerController : MonoBehaviour
         _numFound = Physics.OverlapSphereNonAlloc(_interactionPoint.position, _interactionPointRadius, _colliders, _interactableMask);
     }
 
-    public void UseSelectedItem()
-    {
-        Item receivedItem = InventoryManager.GetInstance().GetSelectedItem(true);
-
-        if (receivedItem != null)
-            Debug.Log("Used Item " + receivedItem.name);
-        else
-            Debug.Log("No Items");
-    }
-
 
 #region Movement
 
@@ -214,6 +204,17 @@ public class PlayerController : MonoBehaviour
         if (ctx.started) {
             UseSelectedItem();
         }
+    }
+
+    public void UseSelectedItem()
+    {
+        Item receivedItem = InventoryManager.GetInstance().GetSelectedItem(true);
+
+        if (receivedItem != null)
+            Debug.Log("Used Item " + receivedItem.name);
+            //spawn
+        else
+            Debug.Log("No Items");
     }
 #endregion
 
