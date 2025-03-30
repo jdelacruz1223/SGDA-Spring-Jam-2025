@@ -9,5 +9,6 @@ public class BugModel
     public string name;
     public int price;
     public string description;
+    public bool stackable;
 }
 

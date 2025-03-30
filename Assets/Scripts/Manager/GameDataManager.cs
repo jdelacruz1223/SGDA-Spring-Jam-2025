@@ -1,6 +1,7 @@
 using UnityEngine;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
+using System.Linq;
 
 /// <summary>
 /// Manages all game data including player currency, inventory, plants, and bugs.
@@ -23,7 +24,6 @@ public class GameDataManager : MonoBehaviour
     public int totalPlantsGrown;
     public int totalMoneyEarned;
     public int totalMoneySpent;
-    public int bug1Count; // temp; holds amount of a bug player own read from currentBugType
 
     void Awake()
     {
@@ -36,6 +36,24 @@ public class GameDataManager : MonoBehaviour
         me = this;
         DontDestroyOnLoad(gameObject);
         InitializeGameData();
+    }
+
+    public void AddDiscoveredBug(string id)
+    {
+        BugModel bug = JSONManager.GetInstance().GetBugById(id);
+
+        if (!discoveredBugTypes.Contains(bug))
+            discoveredBugTypes.Add(bug);
+
+        Item item = ScriptableObject.CreateInstance<Item>();
+
+        item.bugData = bug;
+        item.image = Resources.Load<Sprite>("Bugs/" + bug.id);
+        item.type = ItemType.Bug;
+        item.Stackable = bug.stackable;
+
+        InventoryManager.GetInstance().AddItem(item);
+        totalBugsCaught++;
     }
 
     private void InitializeGameData()

@@ -1,4 +1,7 @@
+using System;
 using System.Threading.Tasks;
+using System.Collections.Generic;
+using System.Collections.ObjectModel;
 using DG.Tweening;
 using UnityEngine;
 
@@ -65,7 +68,12 @@ public class InventoryManager : MonoBehaviour
             InventorySlot slot = inventorySlots[i];
             InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
 
-            if (itemInSlot != null && itemInSlot.item == item && itemInSlot.count < itemInSlot.item.maxStack && itemInSlot.item.Stackable)
+            if (itemInSlot != null &&
+                itemInSlot.item.type == item.type &&
+                ((item.type == ItemType.Bug && itemInSlot.item.bugData.id == item.bugData.id) ||
+                 (item.type == ItemType.Seed && itemInSlot.item.seedData.id == item.seedData.id)) &&
+                itemInSlot.count < itemInSlot.item.maxStack &&
+                itemInSlot.item.Stackable)
             {
                 itemInSlot.count++;
                 itemInSlot.RefreshCount();
@@ -118,6 +126,31 @@ public class InventoryManager : MonoBehaviour
         return null;
     }
 
+    public void RemoveItem(Item item, bool removeOne = false)
+    {
+        for (int i = 0; i < inventorySlots.Length; i++)
+        {
+            InventorySlot slot = inventorySlots[i];
+            InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
+
+            if (itemInSlot != null && itemInSlot.item.type == item.type && itemInSlot.item.bugData.id == item.bugData.id)
+            {
+                if (removeOne)
+                {
+                    itemInSlot.count--;
+                    if (itemInSlot.count <= 0)
+                        Destroy(itemInSlot.gameObject);
+                    else
+                        itemInSlot.RefreshCount();
+                }
+                else
+                {
+                    Destroy(itemInSlot.gameObject);
+                }
+                return;
+            }
+        }
+    }
 
     public void InventoryIntro()
     {
@@ -146,5 +179,24 @@ public class InventoryManager : MonoBehaviour
     {
         ToolbarRect.DOKill();
         ToolbarRect.DOAnchorPosY(-75, tweenDuration).SetUpdate(true);
+    }
+
+    public ObservableCollection<Item> GetAllBugs()
+    {
+        ObservableCollection<Item> bugs = new ObservableCollection<Item>();
+
+        foreach (InventorySlot slot in inventorySlots)
+        {
+            InventoryItem itemInSlot = slot.GetComponentInChildren<InventoryItem>();
+            if (itemInSlot != null && itemInSlot.item.type == ItemType.Bug)
+            {
+                for (int i = 0; i < itemInSlot.count; i++)
+                {
+                    bugs.Add(itemInSlot.item);
+                }
+            }
+        }
+
+        return bugs;
     }
 }

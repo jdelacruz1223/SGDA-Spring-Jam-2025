@@ -22,6 +22,7 @@ public class ShopManager : MonoBehaviour
     [SerializeField] public float tweenDuration;
 
     private Item[] sortedSeeds;
+    private Item[] sortedBugs;
 
     public static ShopManager GetInstance() { return me; }
     public static ShopManager me;
@@ -68,6 +69,41 @@ public class ShopManager : MonoBehaviour
         UpdateShopUI();
     }
 
+    public void PopulateBugList(ObservableCollection<Item> bugs)
+    {
+        foreach (Transform child in SellContent.transform)
+        {
+            Destroy(child.gameObject);
+        }
+
+        sortedBugs = bugs.OrderBy(bug => bug.bugData.price).ToArray();
+
+        foreach (Item bug in sortedBugs)
+        {
+            GameObject item = Instantiate(ItemTemplate, SellContent.transform);
+            Transform bttn = item.transform.Find("Button");
+            item.SetActive(true);
+            item.transform.Find("Image").GetComponent<Image>().sprite = bug.image;
+
+            bttn.GetComponentInChildren<TextMeshProUGUI>().text = "Sell for $" + bug.bugData.price;
+            bttn.GetComponent<Button>().onClick.AddListener(() =>
+            {
+                int index = item.transform.GetSiblingIndex();
+                if (index == 0) SellBug(0); else SellBug(index - 1);
+            });
+        }
+    }
+
+    public void SellBug(int index)
+    {
+        GameDataManager.GetInstance().AddCurrency(sortedBugs[index].bugData.price);
+        InventoryManager.GetInstance().RemoveItem(sortedBugs[index], true);
+        UpdateShopUI();
+
+        ObservableCollection<Item> bugs = InventoryManager.GetInstance().GetAllBugs();
+        PopulateBugList(bugs);
+    }
+
     public void BuySeed(int index)
     {
         if (GameDataManager.GetInstance().SpendCurrency(sortedSeeds[index].seedData.price)) InventoryManager.GetInstance().AddItem(sortedSeeds[index]);
@@ -83,6 +119,9 @@ public class ShopManager : MonoBehaviour
 
     public void ShopIntro()
     {
+        ObservableCollection<Item> bugs = InventoryManager.GetInstance().GetAllBugs();
+        PopulateBugList(bugs);
+
         InventoryManager.GetInstance().HideToolbar();
         ShopPanelRect.DOKill();
         ShopPanelRect.DOAnchorPosY(0, tweenDuration).SetUpdate(true);

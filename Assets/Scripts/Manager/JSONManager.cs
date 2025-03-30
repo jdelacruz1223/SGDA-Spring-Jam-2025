@@ -92,6 +92,26 @@ public class JSONManager : MonoBehaviour
         Debug.LogWarning($"No plant found with id: {id}");
         return null;
     }
+
+    public BugModel GetBugById(string id)
+    {
+        if (plantDatabase == null || plantDatabase.plants == null)
+        {
+            Debug.LogError("Plant database or bug list is null");
+            return null;
+        }
+
+        foreach (BugModel bug in plantDatabase.bugs)
+        {
+            if (bug.id == id)
+            {
+                return bug;
+            }
+        }
+
+        Debug.LogWarning($"No bug found with id: {id}");
+        return null;
+    }
 }
 
 [System.Serializable]

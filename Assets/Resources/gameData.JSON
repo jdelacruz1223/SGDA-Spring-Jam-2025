@@ -8,6 +8,15 @@
       "price": 5,
       "growthTime": 10,
       "description": "Grows into a beautiful Daisy Flower."
+    },
+    {
+      "id": "seed_dichill",
+      "name": "Dichill Seed",
+      "plantId": "dichill_plant",
+      "stackable": true,
+      "price": 5,
+      "growthTime": 10,
+      "description": "Grows into a beautiful Dichill Flower."
     }
   ],
   "plants": [
@@ -16,12 +25,19 @@
       "name": "Daisy",
       "prefab": "DaisyPrefab",
       "bugId": "bug_beetle"
+    },
+    {
+      "id": "dichill_plant",
+      "name": "Dichill",
+      "prefab": "DaisyPrefab",
+      "bugId": "bug_beetle"
     }
   ],
   "bugs": [
     {
       "id": "bug_beetle",
       "name": "Beetle",
+      "stackable": true,
       "price": 5,
       "description": "Buh-Buh-Beetle!"
     }

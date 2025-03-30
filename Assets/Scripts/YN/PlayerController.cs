@@ -214,18 +214,24 @@ public class PlayerController : MonoBehaviour
     public void UseSelectedItem()
     {
         Item receivedItem = null;
-        try {
+        try
+        {
             receivedItem = InventoryManager.GetInstance().GetSelectedItem(true);
-        } catch (NullReferenceException e) {
+        }
+        catch (NullReferenceException e)
+        {
             Debug.LogError("Invalid/no item retrieved.");
         }
+
+        if (receivedItem.type == ItemType.Bug) return;
 
         if (receivedItem != null && receivedItem.type == ItemType.Seed)
         {
             SeedPlanter planter = GetComponent<SeedPlanter>();
             planter.PlantSeed(receivedItem.seedData, transform.position);
         }
-        else {
+        else
+        {
             Debug.Log("No item in hand.");
             return;
         }

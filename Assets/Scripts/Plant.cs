@@ -10,7 +10,7 @@ public class Plant : MonoBehaviour, IInteractable
     [SerializeField] private GameObject bugChild; // assign in editor
     //Plant Attributes
     private enum AgeState { Sprout, Mature }
-    private AgeState currentAge; 
+    private AgeState currentAge;
     //JSONManager
     private PlantModel[] plantTypes;
     private SeedModel[] seedTypes;
@@ -21,14 +21,17 @@ public class Plant : MonoBehaviour, IInteractable
 
 
     // pass seedtype during plant prefab instantiation to set plant type??
-    void Awake() {
+    void Awake()
+    {
         jsonManager = FindFirstObjectByType<JSONManager>();
-        if (jsonManager == null) {
+        if (jsonManager == null)
+        {
             Debug.LogError("JSONManager not found.");
         }
     }
 
-    void Start() {
+    void Start()
+    {
         plantTypes = jsonManager.GetPlantTypes();
         seedTypes = jsonManager.GetSeedTypes();
         bugTypes = jsonManager.GetBugTypes();
@@ -37,8 +40,8 @@ public class Plant : MonoBehaviour, IInteractable
         currentBugType = bugTypes[0];
 
         //write and call function that sets this plant object's planttype
-        
-        currentAge = AgeState.Sprout;        
+
+        currentAge = AgeState.Sprout;
         boxCollider = gameObject.GetComponent<BoxCollider>();
         boxCollider.enabled = false;
 
@@ -84,7 +87,7 @@ public class Plant : MonoBehaviour, IInteractable
     private BoxCollider boxCollider; // toggle collider for interaction
     [SerializeField] private bool hasBug = false;
 
-    
+
     /// <summary>
     /// A timer that attempts to spawn a bug if possible after a certain amount of time. Runs as long as this object exists.
     /// </summary>
@@ -106,7 +109,9 @@ public class Plant : MonoBehaviour, IInteractable
         }
         bugSprite.enabled = false;
         boxCollider.enabled = false;
-        GameDataManager.GetInstance().bug1Count++;
+        GameDataManager.GetInstance().AddDiscoveredBug(currentPlantType.bugId);
+
+
         hasBug = false;
         Debug.Log("Bug taken");
     }
