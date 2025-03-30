@@ -9,8 +9,11 @@ public class Plant : MonoBehaviour, IInteractable
     private AgeState currentAge; 
     public PlantData currentPlantType;
     private BoxCollider boxCollider; // toggle collider for interaction
+    private JSONManager jsonManager;
+    private string[] plantTypes;
 
     void Start() {
+        plantTypes = jsonManager.GetPlantTypes();
         boxCollider = gameObject.GetComponent<BoxCollider>();
         boxCollider.enabled = false;
         StartCoroutine(BugSpawnTimer());
