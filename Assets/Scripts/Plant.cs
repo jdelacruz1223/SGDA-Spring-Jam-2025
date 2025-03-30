@@ -43,7 +43,6 @@ public class Plant : MonoBehaviour, IInteractable
 
     private void Update()
     {
-
         //plant spawning debug keys
         if (Input.GetKeyDown(KeyCode.L))
         {
@@ -73,8 +72,8 @@ public class Plant : MonoBehaviour, IInteractable
     private SpriteRenderer bugSprite;
     private BoxCollider boxCollider; // toggle collider for interaction
     private bool hasBug = false;
-    //make currentBug variable
-    [SerializeField] private float bugSpawnDelay;
+
+    
     /// <summary>
     /// A timer that attempts to spawn a bug if possible after a certain amount of time. Runs as long as this object exists.
     /// </summary>
@@ -87,7 +86,6 @@ public class Plant : MonoBehaviour, IInteractable
         }
     }
 
-    //TODO
     private void TakeBug()
     {
         if (hasBug)
@@ -97,17 +95,15 @@ public class Plant : MonoBehaviour, IInteractable
         }
         bugSprite.enabled = false;
         boxCollider.enabled = false;
-        // increment player bug count
+        GameDataManager.GetInstance().bug1Count++;
         hasBug = false;
         Debug.Log("Bug taken");
     }
 
-    //TODO
     private void SpawnNewBug()
     {
         if (!hasBug)
         {
-            //enable bug model
             bugSprite.enabled = true;
             boxCollider.enabled = true;
             hasBug = true;

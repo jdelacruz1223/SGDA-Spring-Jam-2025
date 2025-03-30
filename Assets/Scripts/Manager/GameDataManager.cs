@@ -23,6 +23,7 @@ public class GameDataManager : MonoBehaviour
     public int totalPlantsGrown;
     public int totalMoneyEarned;
     public int totalMoneySpent;
+    public int bug1Count; // temp; holds amount of a bug player own read from currentBugType
 
     void Awake()
     {

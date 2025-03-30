@@ -231,6 +231,7 @@ MonoBehaviour:
   totalPlantsGrown: 0
   totalMoneyEarned: 0
   totalMoneySpent: 0
+  bug1Count: 0
 --- !u!4 &118264383
 Transform:
   m_ObjectHideFlags: 0
@@ -262,6 +263,8 @@ MonoBehaviour:
     seeds: []
     plants: []
     bugs: []
+  plantData:
+    plantTypes: []
 --- !u!1 &217471991
 GameObject:
   m_ObjectHideFlags: 0
@@ -1620,6 +1623,10 @@ PrefabInstance:
     - target: {fileID: 8677950891424179149, guid: 3d74faac03d25af43bfe8a7acd97be4b, type: 3}
       propertyPath: m_Name
       value: Plant
+      objectReference: {fileID: 0}
+    - target: {fileID: 1118195516180749576, guid: 99ee668d16429884d87c2cfcbba2af15, type: 3}
+      propertyPath: bugSpawnDelay
+      value: 0
       objectReference: {fileID: 0}
     - target: {fileID: 5489698636022087705, guid: 99ee668d16429884d87c2cfcbba2af15, type: 3}
       propertyPath: m_LocalPosition.y
