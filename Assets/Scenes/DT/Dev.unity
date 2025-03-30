@@ -798,24 +798,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b64f564a0d7f58f4cb47e4cf9a028bb4, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
---- !u!1 &626717029 stripped
-GameObject:
-  m_CorrespondingSourceObject: {fileID: 8677950891424179149, guid: 3d74faac03d25af43bfe8a7acd97be4b, type: 3}
-  m_PrefabInstance: {fileID: 861868735}
-  m_PrefabAsset: {fileID: 0}
---- !u!114 &626717036
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 626717029}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 74f4121f21b5e2e499750e1f6c5a3e94, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  seedPrefab: {fileID: 6231484850061178903, guid: b2e1c42052d19594fb16898e66034aba, type: 3}
 --- !u!1001 &710803303
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -1213,10 +1195,7 @@ PrefabInstance:
     m_RemovedComponents: []
     m_RemovedGameObjects: []
     m_AddedGameObjects: []
-    m_AddedComponents:
-    - targetCorrespondingSourceObject: {fileID: 8677950891424179149, guid: 3d74faac03d25af43bfe8a7acd97be4b, type: 3}
-      insertIndex: -1
-      addedObject: {fileID: 626717036}
+    m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3d74faac03d25af43bfe8a7acd97be4b, type: 3}
 --- !u!1001 &911106933
 PrefabInstance:
