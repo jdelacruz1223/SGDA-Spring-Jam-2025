@@ -1,48 +1,29 @@
 {
   "seeds": [
     {
-      "id": "seed_sunflower",
-      "name": "Sunflower Seed",
-      "plantId": "plant_sunflower",
-	  "price": 5,
+      "id": "seed_daisyseed",
+      "name": "Daisy Seed",
+      "plantId": "plant_daisy",
+      "stackable": true,
+      "price": 5,
       "growthTime": 120,
-      "description": "Grows into a beautiful sunflower."
-    },
-    {
-      "id": "seed_lily",
-      "name": "Lily of the Valley Seed",
-      "plantId": "plant_lily",
-	  "price": 10,
-      "growthTime": 90,
-      "description": "Jesse Pinkman would not approve"
+      "description": "Grows into a beautiful Daisy Flower."
     }
   ],
   "plants": [
     {
-      "id": "plant_sunflower",
-      "name": "Sunflower",
-      "prefab": "SunflowerPrefab",
-	  "bugId": "bug_beetle"
-    },
-    {
-      "id": "plant_lily",
-      "name": "Lily of the Valley",
-      "prefab": "LilyPrefab",
-	  "bugId": "bug_lily"
+      "id": "plant_daisy",
+      "name": "Daisy",
+      "prefab": "DaisyPrefab",
+      "bugId": "bug_beetle"
     }
   ],
   "bugs": [
-	{
-	  "id": "bug_beetle",
-	  "name": "Beetle",
-	  "price": 5,
-	  "description": "Buh-Buh-Beetle!"
-	},
-	{
-	  "id": "",
-	  "name": "",
-	  "price": 15,
-	  "description": "Dichill Tomarong"
-	}
+    {
+      "id": "bug_beetle",
+      "name": "Beetle",
+      "price": 5,
+      "description": "Buh-Buh-Beetle!"
+    }
   ]
 }

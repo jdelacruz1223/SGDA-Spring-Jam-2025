@@ -181,6 +181,9 @@ MonoBehaviour:
   - {fileID: 527042077}
   - {fileID: 8082489}
   inventoryItemPrefab: {fileID: 4524497268729288154, guid: 99cbb5877f5c98f489b88e06f7ed42ed, type: 3}
+  ToolbarRect: {fileID: 833530891}
+  MainInventorRect: {fileID: 1798057362}
+  tweenDuration: 0.5
 --- !u!1 &6681284
 GameObject:
   m_ObjectHideFlags: 0

@@ -23,6 +23,8 @@ public class ShopManager : MonoBehaviour
 
     private Item[] sortedSeeds;
 
+    JSONManager jsonManager;
+
     public static ShopManager GetInstance() { return me; }
     public static ShopManager me;
     void Awake()
@@ -39,9 +41,9 @@ public class ShopManager : MonoBehaviour
     void Start()
     {
 
-        Item[] seeds = Resources.LoadAll<Item>("Seeds");
+        SeedModel[] seeds = jsonManager.GetSeedTypes();
 
-        sortedSeeds = seeds.Where(s => s.seedData != null).OrderBy(s => s.seedData.price).ToArray();
+        sortedSeeds = seeds.OrderBy(s => s.seedData.price).ToArray();
 
         foreach (Item seed in sortedSeeds)
         {
