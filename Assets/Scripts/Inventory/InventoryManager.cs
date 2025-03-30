@@ -1,3 +1,5 @@
+using System.Threading.Tasks;
+using DG.Tweening;
 using UnityEngine;
 
 public class InventoryManager : MonoBehaviour
@@ -6,6 +8,11 @@ public class InventoryManager : MonoBehaviour
     public int maxStackeditem = 4;
     public InventorySlot[] inventorySlots;
     public GameObject inventoryItemPrefab;
+
+    [Header("Animations")]
+    public RectTransform ToolbarRect;
+    public RectTransform MainInventorRect;
+    [SerializeField] public float tweenDuration = 0.5f;
 
     public static InventoryManager GetInstance() { return me; }
     public static InventoryManager me;
@@ -108,6 +115,26 @@ public class InventoryManager : MonoBehaviour
         }
 
         return null;
+    }
 
+
+    public void InventoryIntro()
+    {
+
+    }
+
+    public void InventoryOutro()
+    {
+
+    }
+
+    public void ShowToolbar()
+    {
+        ToolbarRect.DOAnchorPosY(0, tweenDuration).SetUpdate(true);
+    }
+
+    public void HideToolbar()
+    {
+        ToolbarRect.DOAnchorPosY(-75, tweenDuration).SetUpdate(true);
     }
 }

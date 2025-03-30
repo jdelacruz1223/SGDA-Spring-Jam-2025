@@ -216,7 +216,10 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         if (other.tag == "NPC")
-            Task.Run(() => ShopManager.GetInstance().ShopOutro());
+        {
+            ShopManager.GetInstance().ShopOutro();
+            InventoryManager.GetInstance().ShowToolbar();
+        }
     }
 
     /// <summary>
