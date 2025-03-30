@@ -1,4 +1,5 @@
 using System;
+using System.Threading.Tasks;
 using UnityEngine;
 
 public class InteractUI : MonoBehaviour, IInteractable
@@ -12,22 +13,10 @@ public class InteractUI : MonoBehaviour, IInteractable
     public string InteractionPrompt => _prompt;
     public bool Interact(PlayerController playerController)
     {
-        if (interactableUI.gameObject.activeSelf) AutoClose();
-        else
-        {
-            Cursor.lockState = CursorLockMode.Confined;
-            Cursor.visible = true;
-            interactableUI.gameObject.SetActive(true);
-        }
+        if (interactableUI.gameObject.activeSelf) Task.Run(async () => await ShopManager.GetInstance().ShopOutro());
+        else ShopManager.GetInstance().ShopIntro();
 
         return true;
     }
     #endregion
-
-    public void AutoClose()
-    {
-        interactableUI.gameObject.SetActive(false);
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
-    }
 }

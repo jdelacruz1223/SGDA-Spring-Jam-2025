@@ -61,9 +61,9 @@ public class GameDataManager : MonoBehaviour
         return true;
     }
 
-#region Plant Functions
-    public void IncrementBugCount(PlantData plantType) {
-         
-    }
-#endregion
+    #region Plant Functions
+    // public void IncrementBugCount(PlantData plantType) {
+
+    // }
+    #endregion
 }
