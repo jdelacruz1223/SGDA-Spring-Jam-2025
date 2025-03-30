@@ -61,11 +61,13 @@ public class Seed : MonoBehaviour
     private IEnumerator GrowCoroutine()
     {
         yield return new WaitForSeconds(2f);
-        GameObject plantPrefab = Resources.Load<GameObject>($"plants/{plantData.prefab}");
+        GameObject plantPrefab = Resources.Load<GameObject>($"Plant");
 
         if (plantPrefab != null)
         {
-            Instantiate(plantPrefab, transform.position, Quaternion.identity);
+            GameObject plant = Instantiate(plantPrefab, transform.position, Quaternion.identity);
+            plant.GetComponent<Plant>().InitializePlant(plantData);
+
             Destroy(gameObject);
         }
         else

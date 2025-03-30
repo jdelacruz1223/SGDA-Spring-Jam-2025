@@ -19,10 +19,9 @@ public class Plant : MonoBehaviour, IInteractable
     private SeedModel[] seedTypes;
     private BugModel[] bugTypes;
     private PlantModel currentPlantType;
-    private SeedModel currentSeedType;
     private BugModel currentBugType;
 
-    private GameObject currentPlantSpritePrefab; 
+    private GameObject currentPlantSpritePrefab;
 
 
     // pass seedtype during plant prefab instantiation to set plant type??
@@ -35,22 +34,16 @@ public class Plant : MonoBehaviour, IInteractable
         }
     }
 
-    void Start()
+    public void InitializePlant(PlantModel plant)
     {
-        plantTypes = jsonManager.GetPlantTypes();
-        seedTypes = jsonManager.GetSeedTypes();
-        bugTypes = jsonManager.GetBugTypes();
-        currentPlantType = plantTypes[0];
-        currentSeedType = seedTypes[0];
-        currentBugType = bugTypes[0];
-
-        //write and call function that sets this plant object's planttype
+        currentPlantType = plant;
+        currentBugType = 
 
         currentAge = AgeState.Sprout;
         boxCollider = gameObject.GetComponent<BoxCollider>();
         boxCollider.enabled = false;
 
-        bugSprite = bugChild.GetComponent<SpriteRenderer>(); // for toggle visibility, not for model itself
+        bugSprite = bugChild.GetComponent<SpriteRenderer>();
         plantSprite = plantChild.GetComponent<SpriteRenderer>();
 
         bugSprite.enabled = true;
@@ -58,7 +51,10 @@ public class Plant : MonoBehaviour, IInteractable
         hasBug = true;
 
         SetModel(currentPlantType);
+    }
 
+    void Start()
+    {
         StartCoroutine(BugSpawnTimer());
     }
 
@@ -77,20 +73,23 @@ public class Plant : MonoBehaviour, IInteractable
         }
     }
 
-#region Initilization
-//TODO
-    private void SetModel(PlantModel currentPlantType) {
-        try {
+    #region Initilization
+    //TODO
+    private void SetModel(PlantModel currentPlantType)
+    {
+        try
+        {
             currentPlantSpritePrefab = Resources.Load<GameObject>($"PlantPrefabs/{currentPlantType.prefab}");
         }
-        catch {
+        catch
+        {
             Debug.Log("PlantSprite prefab not found.");
         }
-        
-    }
-#endregion
 
-#region IInteractable
+    }
+    #endregion
+
+    #region IInteractable
     [SerializeField] private string _prompt;
     public string InteractionPrompt => _prompt;
     public bool Interact(PlayerController playerController)
@@ -147,7 +146,7 @@ public class Plant : MonoBehaviour, IInteractable
             return;
         }
     }
-#endregion
+    #endregion
 }
 
 

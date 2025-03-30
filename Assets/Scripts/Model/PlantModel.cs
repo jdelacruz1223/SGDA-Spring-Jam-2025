@@ -9,5 +9,6 @@ public class PlantModel
     public string name;
     public string prefab;
     public string bugId;
+    public float bugSpawnRate;
 }
 
