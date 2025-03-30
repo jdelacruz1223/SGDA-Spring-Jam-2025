@@ -207,6 +207,7 @@ public class PlayerController : MonoBehaviour
 #region Planting
     [SerializeField] private GameObject plantPrefab;
     public void OnPlantSeed(InputAction.CallbackContext ctx) {
+        // possible edge case: what happens when slot is empty or not a bug?
         if (ctx.started) {
             UseSelectedItem();
         }
@@ -215,6 +216,7 @@ public class PlayerController : MonoBehaviour
 
 #region Inventory
     public void OnInventory(InputAction.CallbackContext ctx) {
+        Debug.Log("InventoryPressed");
         // bounded to E, open inventory
         if (inventoryUI.activeSelf)
             {
