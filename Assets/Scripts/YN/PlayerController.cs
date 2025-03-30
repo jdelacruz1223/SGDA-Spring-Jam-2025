@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEngine;
 using UnityEngine.InputSystem;
 
@@ -215,9 +216,7 @@ public class PlayerController : MonoBehaviour
     private void OnTriggerExit(Collider other)
     {
         if (other.tag == "NPC")
-        {
-            other.GetComponent<InteractUI>().AutoClose();
-        }
+            Task.Run(() => ShopManager.GetInstance().ShopOutro());
     }
 
     /// <summary>
