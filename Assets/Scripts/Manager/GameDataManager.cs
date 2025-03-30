@@ -60,4 +60,10 @@ public class GameDataManager : MonoBehaviour
         totalMoneySpent += amount;
         return true;
     }
+
+#region Plant Functions
+    public void IncrementBugCount(PlantData plantType) {
+         
+    }
+#endregion
 }

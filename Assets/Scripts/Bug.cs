@@ -7,15 +7,9 @@ public class Bug : MonoBehaviour
     public BugType currentBugType; 
     public int value;
 
-    public void Initialize(Plant.PlantType plantType, int bugValue) {
-        switch(plantType) {
-            case Plant.PlantType.Fern:
-                currentBugType = BugType.FernBug;
-                break;
-            default: 
-                currentBugType = BugType.FernBug;
-                break;  
-        }
+    // TODO 
+    public void Initialize(int bugValue) { 
+        //insert bugType 
         value = bugValue;
     }
 
