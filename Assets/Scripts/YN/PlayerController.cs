@@ -62,16 +62,6 @@ public class PlayerController : MonoBehaviour
         _numFound = Physics.OverlapSphereNonAlloc(_interactionPoint.position, _interactionPointRadius, _colliders, _interactableMask);
     }
 
-    public void UseSelectedItem()
-    {
-        Item receivedItem = InventoryManager.GetInstance().GetSelectedItem(true);
-
-        if (receivedItem != null)
-            Debug.Log("Used Item " + receivedItem.name);
-        else
-            Debug.Log("No Items");
-    }
-
 
 #region Movement
 
@@ -210,14 +200,27 @@ public class PlayerController : MonoBehaviour
 #region Planting
     [SerializeField] private GameObject plantPrefab;
     public void OnPlantSeed(InputAction.CallbackContext ctx) {
+        // possible edge case: what happens when slot is empty or not a bug?
         if (ctx.started) {
             UseSelectedItem();
         }
+    }
+
+    public void UseSelectedItem()
+    {
+        Item receivedItem = InventoryManager.GetInstance().GetSelectedItem(true);
+
+        if (receivedItem != null)
+            Debug.Log("Used Item " + receivedItem.name);
+            //spawn
+        else
+            Debug.Log("No Items");
     }
 #endregion
 
 #region Inventory
     public void OnInventory(InputAction.CallbackContext ctx) {
+        Debug.Log("InventoryPressed");
         // bounded to E, open inventory
         if (inventoryUI.activeSelf)
             {

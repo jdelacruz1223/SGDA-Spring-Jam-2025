@@ -6,28 +6,54 @@ public class Plant : MonoBehaviour, IInteractable
     //JSON
     private JSONManager jsonManager; // getter
     //Editor
-    [SerializeField] private GameObject model; // assign in editor
-    private BoxCollider boxCollider; // toggle collider for interaction
+    [SerializeField] private GameObject plantChild; // assign in editor
+    [SerializeField] private GameObject bugChild; // assign in editor
     //Plant Attributes
     private enum AgeState { Sprout, Mature }
     private AgeState currentAge; 
-    private string[] plantTypes;
-    private string currentPlantType;
-    private string seedType { get; set;}
+    //JSONManager
+    private PlantModel[] plantTypes;
+    private SeedModel[] seedTypes;
+    private BugModel[] bugTypes;
+    private PlantModel currentPlantType;
+    private SeedModel currentSeedType;
+    private BugModel currentBugType;
 
-    // pass seedtype during plant prefab instantiation to set plant type
-    
+
+    // pass seedtype during plant prefab instantiation to set plant type??
+    void Awake() {
+        jsonManager = FindFirstObjectByType<JSONManager>();
+        if (jsonManager == null) {
+            Debug.LogError("JSONManager not found.");
+        }
+    }
+
     void Start() {
+        plantTypes = jsonManager.GetPlantTypes();
+        seedTypes = jsonManager.GetSeedTypes();
+        bugTypes = jsonManager.GetBugTypes();
+        currentPlantType = plantTypes[0];
+        currentSeedType = seedTypes[0];
+        currentBugType = bugTypes[0];
+
+        //write and call function that sets this plant object's planttype
         
+        currentAge = AgeState.Sprout;        
         boxCollider = gameObject.GetComponent<BoxCollider>();
         boxCollider.enabled = false;
+
+        bugSprite = bugChild.GetComponent<SpriteRenderer>();
+        plantSprite = plantChild.GetComponent<SpriteRenderer>();
+
+        bugSprite.enabled = true;
+        boxCollider.enabled = true;
+        hasBug = true;
+
         StartCoroutine(BugSpawnTimer());
     }
 
     private void Update()
     {
-        SetModel();
-
         //plant spawning debug keys
         if (Input.GetKeyDown(KeyCode.L))
         {
@@ -41,20 +67,6 @@ public class Plant : MonoBehaviour, IInteractable
         }
     }
 
-    private void SetModel()
-    {
-        if (currentAge == AgeState.Sprout)
-        {
-            model.SetActive(false);
-            boxCollider.enabled = false;
-            return;
-        }
-        model.SetActive(true);
-        boxCollider.enabled = true;
-    }
-
-
-
     #region IInteractable
     [SerializeField] private string _prompt;
     public string InteractionPrompt => _prompt;
@@ -67,9 +79,12 @@ public class Plant : MonoBehaviour, IInteractable
     #endregion
 
     #region Bug Handling
-    private bool hasBug = false;
-    //make currentBug variable
-    [SerializeField] private float bugSpawnDelay;
+    private SpriteRenderer bugSprite;
+    private SpriteRenderer plantSprite;
+    private BoxCollider boxCollider; // toggle collider for interaction
+    [SerializeField] private bool hasBug = false;
+
+    
     /// <summary>
     /// A timer that attempts to spawn a bug if possible after a certain amount of time. Runs as long as this object exists.
     /// </summary>
@@ -77,33 +92,33 @@ public class Plant : MonoBehaviour, IInteractable
     {
         while (true)
         {
-            yield return new WaitForSeconds(bugSpawnDelay);
+            yield return new WaitForSeconds(currentSeedType.growthTime);
             if (!hasBug) SpawnNewBug();
         }
     }
 
-    //TODO
     private void TakeBug()
     {
-        if (hasBug)
+        if (!hasBug)
         {
             Debug.Log("No bug to take :(");
             return;
         }
-        // insert take bug functionality
+        bugSprite.enabled = false;
+        boxCollider.enabled = false;
+        GameDataManager.GetInstance().bug1Count++;
         hasBug = false;
         Debug.Log("Bug taken");
     }
 
-    //TODO
     private void SpawnNewBug()
     {
         if (!hasBug)
         {
-            //insert spawn bug functionality
-
+            bugSprite.enabled = true;
+            boxCollider.enabled = true;
             hasBug = true;
-            Debug.Log("Bug spawned");
+            Debug.Log("Bug enabled");
             return;
         }
     }
