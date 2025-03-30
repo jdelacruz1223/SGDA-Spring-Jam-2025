@@ -1,6 +1,10 @@
+using System;
+using UnityEngine;
+
+[Serializable]
 public class BugModel
 {
-    public int id;
+    [Header("Bug Information")]
     public string name;
     public int price;
     public int amount;

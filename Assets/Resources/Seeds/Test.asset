@@ -9,12 +9,22 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: f664cd8f06781cf44937c6e50e5ba464, type: 3}
-  m_Name: Fern Seed
+  m_Script: {fileID: 11500000, guid: ab5a08c46aaca2e4fb82a11f8b505b44, type: 3}
+  m_Name: Test
   m_EditorClassIdentifier: 
+  image: {fileID: 21300000, guid: 079fc2bdc67ddb84abbcf85cf318f82c, type: 3}
+  Stackable: 1
+  maxStack: 64
+  type: 0
+  actionType: 0
   seedData:
-    id: 1
-    name: Fern Seed
-    price: 10
+    name: Test
+    price: 20
     amount: 1
     seedType: 0
+  bugData:
+    name: 
+    price: 0
+    amount: 0
+    bugType: 0
+    rarity: 0

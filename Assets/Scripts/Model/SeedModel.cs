@@ -1,7 +1,10 @@
+using UnityEngine;
+
 [System.Serializable]
 public class SeedModel
 {
-    public int id;
+
+    [Header("Seed Information")]
     public string name;
     public int price;
     public int amount;

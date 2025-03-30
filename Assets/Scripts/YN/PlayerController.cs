@@ -42,6 +42,8 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     CharacterController cc;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    [SerializeField] GameObject inventoryUI;
     void Start()
     {
         if (cc == null) cc = GetComponent<CharacterController>();
@@ -54,10 +56,44 @@ public class PlayerController : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        TryMove(); 
-        _numFound = Physics.OverlapSphereNonAlloc(_interactionPoint.position, _interactionPointRadius, _colliders, _interactableMask); 
-              
+        TryMove();
+        KeyboardInteract();
+        _numFound = Physics.OverlapSphereNonAlloc(_interactionPoint.position, _interactionPointRadius, _colliders, _interactableMask);
     }
+
+    void KeyboardInteract()
+    {
+        /// Toggle inventory UI
+        if (Input.GetKeyDown(KeyCode.I))
+        {
+            if (inventoryUI.activeSelf)
+            {
+                inventoryUI.SetActive(false);
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
+            else
+            {
+                inventoryUI.SetActive(true);
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
+        }
+
+        if (Input.GetKeyDown(KeyCode.F))
+            UseSelectedItem();
+    }
+
+    public void UseSelectedItem()
+    {
+        Item receivedItem = InventoryManager.GetInstance().GetSelectedItem(true);
+
+        if (receivedItem != null)
+            Debug.Log("Used Item " + receivedItem.name);
+        else
+            Debug.Log("No Items");
+    }
+
 
     #region Movement
 
