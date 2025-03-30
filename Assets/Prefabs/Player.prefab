@@ -562,6 +562,7 @@ MonoBehaviour:
   sprintMultipler: 1.25
   acceleration: 1.25
   deceleration: 0.75
+  inventoryUI: {fileID: 0}
   _interactionPoint: {fileID: 6611731779589284443}
   _interactionPointRadius: 1
   _interactableMask:

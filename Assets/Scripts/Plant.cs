@@ -1,19 +1,24 @@
 using System.Collections;
 using UnityEngine;
-using System.Collections.ObjectModel;
 
 public class Plant : MonoBehaviour, IInteractable
 {
+    //JSON
+    private JSONManager jsonManager; // getter
+    //Editor
     [SerializeField] private GameObject model; // assign in editor
+    private BoxCollider boxCollider; // toggle collider for interaction
+    //Plant Attributes
     private enum AgeState { Sprout, Mature }
     private AgeState currentAge; 
-    public PlantData currentPlantType;
-    private BoxCollider boxCollider; // toggle collider for interaction
-    private JSONManager jsonManager;
     private string[] plantTypes;
+    private string currentPlantType;
+    private string seedType { get; set;}
 
+    // pass seedtype during plant prefab instantiation to set plant type
+    
     void Start() {
-        plantTypes = jsonManager.GetPlantTypes();
+
         boxCollider = gameObject.GetComponent<BoxCollider>();
         boxCollider.enabled = false;
         StartCoroutine(BugSpawnTimer());

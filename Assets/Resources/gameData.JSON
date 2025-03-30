@@ -1,5 +1,48 @@
 {
-	"plantTypes": ["Fern"]
-	"seedTypes": ["FernSeed"]
-	"bugTypes": ["Bug1"]
+  "seeds": [
+    {
+      "id": "seed_sunflower",
+      "name": "Sunflower Seed",
+      "plantId": "plant_sunflower",
+	  "price": 5,
+      "growthTime": 120,
+      "description": "Grows into a beautiful sunflower."
+    },
+    {
+      "id": "seed_lily",
+      "name": "Lily of the Valley Seed",
+      "plantId": "plant_lily",
+	  "price": 10,
+      "growthTime": 90,
+      "description": "Jesse Pinkman would not approve"
+    }
+  ],
+  "plants": [
+    {
+      "id": "plant_sunflower",
+      "name": "Sunflower",
+      "prefab": "SunflowerPrefab",
+	  "bugId": "bug_beetle"
+    },
+    {
+      "id": "plant_lily",
+      "name": "Lily of the Valley",
+      "prefab": "LilyPrefab",
+	  "bugId": "bug_lily"
+    }
+  ],
+  "bugs": [
+	{
+	  "id": "bug_beetle",
+	  "name": "Beetle",
+	  "price": 5,
+	  "description": "Buh-Buh-Beetle!"
+	},
+	{
+	  "id": "",
+	  "name": "",
+	  "price": 15,
+	  "description": "Dichill Tomarong"
+	}
+  ]
 }

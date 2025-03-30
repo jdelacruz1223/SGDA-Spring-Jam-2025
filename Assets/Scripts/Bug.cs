@@ -8,7 +8,6 @@ public class Bug : MonoBehaviour
     private string[] bugTypes;
 
     void Start() {
-        bugTypes = jsonManager.GetPlantTypes();
     }
 
     private void StartMinigame() {
