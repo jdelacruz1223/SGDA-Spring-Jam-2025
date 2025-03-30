@@ -1,9 +1,12 @@
 using TMPro;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class ToggleInstructions : MonoBehaviour
 {
     [SerializeField] TextMeshProUGUI howToShowText;
+    [SerializeField] Image instructionBackground;
+
     [SerializeField] string pressToShow = "Press Tab to show instructions";
     [SerializeField] string pressToHide = "Press Tab to hide instructions";
     bool isPressToShow;
@@ -31,10 +34,12 @@ public class ToggleInstructions : MonoBehaviour
     void ChangeToPressToShow()
     {
         howToShowText.text = pressToShow;
+        instructionBackground.enabled = false;
     }
 
     void ChangeToPressToHide()
     {
         howToShowText.text = pressToHide;
+        instructionBackground.enabled = true;
     }
 }
