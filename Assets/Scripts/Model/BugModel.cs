@@ -5,20 +5,9 @@ using UnityEngine;
 public class BugModel
 {
     [Header("Bug Information")]
+    public string id;
     public string name;
     public int price;
-    public int amount;
-    public BugType bugType;
-    public Rarity rarity;
+    public string description;
 }
 
-public enum BugType
-{
-    Ant
-}
-
-public enum Rarity
-{
-    Basic,
-    Rare
-}

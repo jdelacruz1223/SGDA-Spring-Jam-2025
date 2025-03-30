@@ -3,16 +3,12 @@ using UnityEngine;
 
 public class Bug : MonoBehaviour
 {
-    public enum BugType { FernBug }
-    public BugType currentBugType; 
     public int value;
+    private JSONManager jsonManager;
+    private string[] bugTypes;
 
-    // TODO 
-    public void Initialize(int bugValue) { 
-        //insert bugType 
-        value = bugValue;
+    void Start() {
     }
-
 
     private void StartMinigame() {
         Debug.Log("Minigame hajimeru");

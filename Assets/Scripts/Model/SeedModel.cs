@@ -5,13 +5,11 @@ public class SeedModel
 {
 
     [Header("Seed Information")]
+    public string id;
     public string name;
+    public string plantId;
     public int price;
-    public int amount;
-    public SeedType seedType;
+    public float growthTime;
+    public string description;
 }
 
-public enum SeedType
-{
-    Fern
-}

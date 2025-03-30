@@ -1,36 +1,49 @@
+using System.Collections.Generic;
 using UnityEngine;
 
 public class JSONManager : MonoBehaviour
 {
-    public PlantData plantData;
-    private string[] plantTypes;
+    public PlantDatabase plantDatabase;
     void Start()
     {
-        LoadPlantData();
+        LoadData();
     }
 
-    void Update()
-    {
-        
-    }
-#region Plant JSON
-    public void LoadPlantData() {
-        TextAsset jsonFile = Resources.Load<TextAsset>("plantData");
+    public void LoadData() {
+        TextAsset jsonFile = Resources.Load<TextAsset>("gameData");
         if (jsonFile != null) {
-            PlantData data = JsonUtility.FromJson<PlantData>("jsonFile.text");
-            plantTypes = data.plantTypes;
-
-            foreach (var plant in plantTypes) {
-                Debug.Log($"Loaded Plant: {plant}");
-            }
-        } else Debug.LogError("plantData.json not found");
+            plantDatabase = JsonUtility.FromJson<PlantDatabase>(jsonFile.text);
+        } else Debug.LogError("gameData.json not found");
     }
 
-#endregion
+    public PlantModel[] GetPlantTypes() {
+        return plantDatabase.plants.ToArray();
+    }
+    public SeedModel[] GetSeedTypes() {
+        return plantDatabase.seeds.ToArray();
+    }
+    public BugModel[] GetBugTypes() {
+        return plantDatabase.bugs.ToArray();
+    }
 }
 
 [System.Serializable]
 public class PlantData {
     public string[] plantTypes;
 }
+public class SeedData { 
+    public string[] seedTypes;
+}
+public class BugData {
+    public string[] bugTypes;
+}
+
+[System.Serializable]
+public class PlantDatabase
+{
+    public List<SeedModel> seeds;
+    public List<PlantModel> plants;
+    public List<BugModel> bugs;
+}
+
 
