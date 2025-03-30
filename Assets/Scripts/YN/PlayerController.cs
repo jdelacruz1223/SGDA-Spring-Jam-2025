@@ -49,13 +49,15 @@ public class PlayerController : MonoBehaviour
     CharacterController cc;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
-    [SerializeField] GameObject inventoryUI;
+    
     void Start()
     {
         if (cc == null) cc = GetComponent<CharacterController>();
         GetComponent<CameraController>().target = gameObject;
         Cursor.lockState = CursorLockMode.Locked; //lock cursor to play window
         Cursor.visible = false; //make cursor invisible
+        interactableCanvas.SetActive(false);
+        inventoryUI = GameObject.Find("MainInventoryGroup");
 
     }
 
@@ -163,6 +165,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask _interactableMask;
     [SerializeField] private int _numFound;
     private readonly Collider[] _colliders = new Collider[3];
+    [SerializeField] private GameObject interactableCanvas;
 
     /// <summary>
     /// Called when Interact action is performed.
@@ -184,9 +187,19 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.tag == "NPC")
+        if (other.tag == "NPC" || other.tag == "Plant")
         {
             ShopManager.GetInstance().ShopOutro();
+            Debug.Log("Exit Trigger");
+            interactableCanvas.SetActive(false);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "NPC" || other.tag == "Plant") {
+            Debug.Log("Enter Trigger");
+            interactableCanvas.SetActive(true);
         }
     }
 
@@ -239,6 +252,8 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region Inventory
+    // [SerializeField] GameObject inventoryUI;
+    GameObject inventoryUI;
     public async void OnInventory(InputAction.CallbackContext ctx)
     {
         if (!ctx.started) return;

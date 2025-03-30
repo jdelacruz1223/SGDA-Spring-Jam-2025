@@ -5,6 +5,7 @@ TagManager:
   serializedVersion: 3
   tags:
   - NPC
+  - Plant
   layers:
   - Default
   - TransparentFX

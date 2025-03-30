@@ -1,4 +1,7 @@
+using System;
 using System.Collections;
+using Unity.VisualScripting;
+using UnityEditor;
 using UnityEngine;
 
 public class Plant : MonoBehaviour, IInteractable
@@ -18,6 +21,8 @@ public class Plant : MonoBehaviour, IInteractable
     private PlantModel currentPlantType;
     private SeedModel currentSeedType;
     private BugModel currentBugType;
+
+    private GameObject currentPlantSpritePrefab; 
 
 
     // pass seedtype during plant prefab instantiation to set plant type??
@@ -45,12 +50,14 @@ public class Plant : MonoBehaviour, IInteractable
         boxCollider = gameObject.GetComponent<BoxCollider>();
         boxCollider.enabled = false;
 
-        bugSprite = bugChild.GetComponent<SpriteRenderer>();
+        bugSprite = bugChild.GetComponent<SpriteRenderer>(); // for toggle visibility, not for model itself
         plantSprite = plantChild.GetComponent<SpriteRenderer>();
 
         bugSprite.enabled = true;
         boxCollider.enabled = true;
         hasBug = true;
+
+        SetModel(currentPlantType);
 
         StartCoroutine(BugSpawnTimer());
     }
@@ -70,7 +77,20 @@ public class Plant : MonoBehaviour, IInteractable
         }
     }
 
-    #region IInteractable
+#region Initilization
+//TODO
+    private void SetModel(PlantModel currentPlantType) {
+        try {
+            currentPlantSpritePrefab = Resources.Load<GameObject>($"PlantPrefabs/{currentPlantType.prefab}");
+        }
+        catch {
+            Debug.Log("PlantSprite prefab not found.");
+        }
+        
+    }
+#endregion
+
+#region IInteractable
     [SerializeField] private string _prompt;
     public string InteractionPrompt => _prompt;
     public bool Interact(PlayerController playerController)
@@ -127,12 +147,7 @@ public class Plant : MonoBehaviour, IInteractable
             return;
         }
     }
-    #endregion
-
-    #region UI
-    // promptUI
-    #endregion
-
+#endregion
 }
 
 

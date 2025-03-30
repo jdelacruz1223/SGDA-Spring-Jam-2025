@@ -4,8 +4,12 @@ using UnityEngine;
 
 public class InteractUI : MonoBehaviour, IInteractable
 {
-    [SerializeField]
+    // [SerializeField]
     public Transform interactableUI;
+
+    void Start() {
+        interactableUI = GameObject.Find("Canvas")?.transform.Find("Shop");
+    }
 
 
     #region IInteractable

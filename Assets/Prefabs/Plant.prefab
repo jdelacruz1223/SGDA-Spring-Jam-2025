@@ -100,7 +100,7 @@ GameObject:
   - component: {fileID: 8421595396491905510}
   m_Layer: 6
   m_Name: Plant
-  m_TagString: Untagged
+  m_TagString: Plant
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -137,6 +137,7 @@ MonoBehaviour:
   plantChild: {fileID: 3038046280102373254}
   bugChild: {fileID: 8940387433680878192}
   _prompt: 
+  hasBug: 0
 --- !u!65 &8421595396491905510
 BoxCollider:
   m_ObjectHideFlags: 0
@@ -203,7 +204,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: c128426b2f4151549bab6cc0715c66ca, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  value: 0
 --- !u!212 &7455896274793665398
 SpriteRenderer:
   m_ObjectHideFlags: 0
