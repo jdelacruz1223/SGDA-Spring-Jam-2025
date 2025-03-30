@@ -88,11 +88,11 @@ public class ShopManager : MonoBehaviour
         ShopPanelRect.gameObject.SetActive(true);
     }
 
-    public async Task ShopOutro()
+    async public void ShopOutro()
     {
-        await Task.Run(async () => await ShopPanelRect.DOAnchorPosY(430, tweenDuration).SetUpdate(true).AsyncWaitForCompletion());
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
+        await Task.Run(async () => await ShopPanelRect.DOAnchorPosY(430, tweenDuration).SetUpdate(true).AsyncWaitForCompletion());
         ShopPanelRect.gameObject.SetActive(false);
     }
 }
