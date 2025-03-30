@@ -80,6 +80,9 @@ MonoBehaviour:
   BuyContent: {fileID: 0}
   SellContent: {fileID: 0}
   ItemTemplate: {fileID: 0}
+  currencyTxt: {fileID: 0}
+  ShopPanelRect: {fileID: 0}
+  tweenDuration: 0
 --- !u!1 &8095761675213627778
 GameObject:
   m_ObjectHideFlags: 0
@@ -90,6 +93,7 @@ GameObject:
   m_Component:
   - component: {fileID: 6897672865743642382}
   - component: {fileID: 3784150699878264416}
+  - component: {fileID: 5476660792677165481}
   m_Layer: 0
   m_Name: GameDataManager
   m_TagString: Untagged
@@ -130,3 +134,19 @@ MonoBehaviour:
   totalPlantsGrown: 0
   totalMoneyEarned: 0
   totalMoneySpent: 0
+--- !u!114 &5476660792677165481
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8095761675213627778}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9010685c4f448e84f80d463c9d2bc5ed, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  plantDatabase:
+    seeds: []
+    plants: []
+    bugs: []

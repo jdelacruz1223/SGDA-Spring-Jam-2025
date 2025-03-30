@@ -7,26 +7,42 @@ public class Plant : MonoBehaviour, IInteractable
     private JSONManager jsonManager; // getter
     //Editor
     [SerializeField] private GameObject model; // assign in editor
-    private BoxCollider boxCollider; // toggle collider for interaction
     //Plant Attributes
     private enum AgeState { Sprout, Mature }
     private AgeState currentAge; 
-    private string[] plantTypes;
-    private string currentPlantType;
-    private string seedType { get; set;}
+    private PlantModel[] plantTypes;
+    private SeedModel[] seedTypes;
+    private BugModel[] bugTypes;
+    private PlantModel currentPlantType;
+    private SeedModel currentSeedType;
+    private BugModel currentBugType;
+
 
     // pass seedtype during plant prefab instantiation to set plant type
-    
+    void Awake() {
+        jsonManager = FindFirstObjectByType<JSONManager>();
+        if (jsonManager == null) {
+            Debug.LogError("JSONManager not found.");
+        }
+    }
+
     void Start() {
-        
+        plantTypes = jsonManager.GetPlantTypes();
+        seedTypes = jsonManager.GetSeedTypes();
+        bugTypes = jsonManager.GetBugTypes();
+        currentPlantType = plantTypes[0];
+        currentSeedType = seedTypes[0];
+        currentBugType = bugTypes[0];
+
+        currentAge = AgeState.Sprout;        
         boxCollider = gameObject.GetComponent<BoxCollider>();
         boxCollider.enabled = false;
+        bugSprite = bugObject.GetComponent<SpriteRenderer>();
         StartCoroutine(BugSpawnTimer());
     }
 
     private void Update()
     {
-        SetModel();
 
         //plant spawning debug keys
         if (Input.GetKeyDown(KeyCode.L))
@@ -41,20 +57,6 @@ public class Plant : MonoBehaviour, IInteractable
         }
     }
 
-    private void SetModel()
-    {
-        if (currentAge == AgeState.Sprout)
-        {
-            model.SetActive(false);
-            boxCollider.enabled = false;
-            return;
-        }
-        model.SetActive(true);
-        boxCollider.enabled = true;
-    }
-
-
-
     #region IInteractable
     [SerializeField] private string _prompt;
     public string InteractionPrompt => _prompt;
@@ -67,6 +69,9 @@ public class Plant : MonoBehaviour, IInteractable
     #endregion
 
     #region Bug Handling
+    [SerializeField] private GameObject bugObject;
+    private SpriteRenderer bugSprite;
+    private BoxCollider boxCollider; // toggle collider for interaction
     private bool hasBug = false;
     //make currentBug variable
     [SerializeField] private float bugSpawnDelay;
@@ -77,7 +82,7 @@ public class Plant : MonoBehaviour, IInteractable
     {
         while (true)
         {
-            yield return new WaitForSeconds(bugSpawnDelay);
+            yield return new WaitForSeconds(currentSeedType.growthTime);
             if (!hasBug) SpawnNewBug();
         }
     }
@@ -90,7 +95,9 @@ public class Plant : MonoBehaviour, IInteractable
             Debug.Log("No bug to take :(");
             return;
         }
-        // insert take bug functionality
+        bugSprite.enabled = false;
+        boxCollider.enabled = false;
+        // increment player bug count
         hasBug = false;
         Debug.Log("Bug taken");
     }
@@ -100,10 +107,11 @@ public class Plant : MonoBehaviour, IInteractable
     {
         if (!hasBug)
         {
-            //insert spawn bug functionality
-
+            //enable bug model
+            bugSprite.enabled = true;
+            boxCollider.enabled = true;
             hasBug = true;
-            Debug.Log("Bug spawned");
+            Debug.Log("Bug enabled");
             return;
         }
     }
