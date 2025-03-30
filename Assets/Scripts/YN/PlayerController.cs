@@ -49,7 +49,7 @@ public class PlayerController : MonoBehaviour
     CharacterController cc;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
-    [SerializeField] GameObject inventoryUI;
+    
     void Start()
     {
         if (cc == null) cc = GetComponent<CharacterController>();
@@ -57,6 +57,8 @@ public class PlayerController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked; //lock cursor to play window
         Cursor.visible = false; //make cursor invisible
         interactableCanvas.SetActive(false);
+        inventoryUI = GameObject.Find("MainInventoryGroup");
+
     }
 
     // Update is called once per frame
@@ -244,6 +246,8 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region Inventory
+    // [SerializeField] GameObject inventoryUI;
+    GameObject inventoryUI;
     public async void OnInventory(InputAction.CallbackContext ctx)
     {
         if (!ctx.started) return;
