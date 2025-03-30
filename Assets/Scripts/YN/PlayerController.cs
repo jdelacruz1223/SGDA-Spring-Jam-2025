@@ -1,3 +1,4 @@
+using System.Threading.Tasks;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -58,31 +59,7 @@ public class PlayerController : MonoBehaviour
     void Update()
     {
         TryMove();
-        KeyboardInteract();
         _numFound = Physics.OverlapSphereNonAlloc(_interactionPoint.position, _interactionPointRadius, _colliders, _interactableMask);
-    }
-
-    void KeyboardInteract()
-    {
-        /// Toggle inventory UI
-        if (Input.GetKeyDown(KeyCode.I))
-        {
-            if (inventoryUI.activeSelf)
-            {
-                inventoryUI.SetActive(false);
-                Cursor.lockState = CursorLockMode.Locked;
-                Cursor.visible = false;
-            }
-            else
-            {
-                inventoryUI.SetActive(true);
-                Cursor.lockState = CursorLockMode.None;
-                Cursor.visible = true;
-            }
-        }
-
-        if (Input.GetKeyDown(KeyCode.F))
-            UseSelectedItem();
     }
 
     public void UseSelectedItem()
@@ -186,7 +163,7 @@ public class PlayerController : MonoBehaviour
     }
 #endregion
 
-#region Interaction - Justin
+#region Interaction
     [SerializeField] private Transform _interactionPoint;
     [SerializeField] private float _interactionPointRadius = 0.5f;
     [SerializeField] private LayerMask _interactableMask;
@@ -231,8 +208,26 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private GameObject plantPrefab;
     public void OnPlantSeed(InputAction.CallbackContext ctx) {
         if (ctx.started) {
-            // Instantiate();
+            UseSelectedItem();
         }
     }
+#endregion
+
+#region Inventory
+    public void OnInventory(InputAction.CallbackContext ctx) {
+        // bounded to E, open inventory
+        if (inventoryUI.activeSelf)
+            {
+                inventoryUI.SetActive(false);
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+            }
+            else
+            {
+                inventoryUI.SetActive(true);
+                Cursor.lockState = CursorLockMode.None;
+                Cursor.visible = true;
+            }
+    } 
 #endregion
 }
