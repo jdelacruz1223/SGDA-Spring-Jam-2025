@@ -4,16 +4,45 @@ using UnityEngine;
 public class JSONManager : MonoBehaviour
 {
     public PlantDatabase plantDatabase;
-    void Start()
+    public PlantData plantData;
+    public BugData bugData;
+    public SeedData seedData;
+    
+
+    void Awake()
     {
         LoadData();
+    }
+
+    void Start()
+    {
+        Debug.Log(GetPlantTypes().ToString());
+        
+        if (plantDatabase == null) {
+            Debug.LogError("plantDatabase is null after LoadData(). Check JSON structure.");
+        return; 
+        }
     }
 
     public void LoadData() {
         TextAsset jsonFile = Resources.Load<TextAsset>("gameData");
         if (jsonFile != null) {
             plantDatabase = JsonUtility.FromJson<PlantDatabase>(jsonFile.text);
+            if (plantDatabase == null) {
+                Debug.LogError("Failed to parse gameData.json into PlantDatabase.");
+                return;
+            }
+            if (seedData == null) seedData = new SeedData();
+            if (plantData == null) plantData = new PlantData();
+            if (bugData == null) bugData = new BugData();
+
+            plantData.plantTypes = plantDatabase.plants.ToArray();
+            bugData.bugTypes = plantDatabase.bugs.ToArray();
+            seedData.seedTypes = plantDatabase.seeds.ToArray();
+
         } else Debug.LogError("gameData.json not found");
+
+        Debug.Log($"{GetPlantTypes()}, {GetSeedTypes()}, {GetBugTypes()}");
     }
 
     public PlantModel[] GetPlantTypes() {
@@ -29,13 +58,13 @@ public class JSONManager : MonoBehaviour
 
 [System.Serializable]
 public class PlantData {
-    public string[] plantTypes;
+    public PlantModel[] plantTypes;
 }
 public class SeedData { 
-    public string[] seedTypes;
+    public SeedModel[] seedTypes;
 }
 public class BugData {
-    public string[] bugTypes;
+    public BugModel[] bugTypes;
 }
 
 [System.Serializable]

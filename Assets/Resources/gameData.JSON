@@ -5,7 +5,7 @@
       "name": "Sunflower Seed",
       "plantId": "plant_sunflower",
 	  "price": 5,
-      "growthTime": 120,
+      "growthTime": 1,
       "description": "Grows into a beautiful sunflower."
     },
     {
