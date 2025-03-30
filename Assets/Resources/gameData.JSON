@@ -23,22 +23,29 @@
     {
       "id": "plant_daisy",
       "name": "Daisy",
-      "prefab": "DaisyPrefab",
-      "bugId": "bug_beetle"
+      "bugId": "justin"
     },
     {
       "id": "dichill_plant",
       "name": "Dichill",
-      "prefab": "DaisyPrefab",
       "bugId": "bug_beetle"
     }
   ],
   "bugs": [
     {
+      "id": "justin",
+      "name": "Justin",
+      "stackable": true,
+      "price": 5,
+      "spawnTime": 10,
+      "description": "This Justin is a bug!"
+    },
+    {
       "id": "bug_beetle",
       "name": "Beetle",
       "stackable": true,
       "price": 5,
+      "spawnTime": 10,
       "description": "Buh-Buh-Beetle!"
     }
   ]

@@ -72,7 +72,7 @@ public class Seed : MonoBehaviour
         }
         else
         {
-            Debug.LogError($"Failed to load plant prefab: {plantData.prefab}");
+            Debug.LogError($"Failed to load Plant!");
         }
     }
 }

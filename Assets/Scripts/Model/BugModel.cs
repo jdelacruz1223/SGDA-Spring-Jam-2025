@@ -7,8 +7,9 @@ public class BugModel
     [Header("Bug Information")]
     public string id;
     public string name;
+    public bool stackable;
     public int price;
     public string description;
-    public bool stackable;
+    public float spawnTime;
 }
 

@@ -35,10 +35,9 @@ public class GameDataManager : MonoBehaviour
 
         me = this;
         DontDestroyOnLoad(gameObject);
-        InitializeGameData();
     }
 
-    public void AddDiscoveredBug(string id)
+    public void AddBug(string id)
     {
         BugModel bug = JSONManager.GetInstance().GetBugById(id);
 
@@ -49,16 +48,11 @@ public class GameDataManager : MonoBehaviour
 
         item.bugData = bug;
         item.image = Resources.Load<Sprite>("Bugs/" + bug.id);
-        item.type = ItemType.Bug;
         item.Stackable = bug.stackable;
+        item.type = ItemType.Bug;
 
         InventoryManager.GetInstance().AddItem(item);
         totalBugsCaught++;
-    }
-
-    private void InitializeGameData()
-    {
-
     }
 
     public bool CanAfford(int amount)

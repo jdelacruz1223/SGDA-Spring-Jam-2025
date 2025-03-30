@@ -6,88 +6,36 @@ using UnityEngine;
 
 public class Plant : MonoBehaviour, IInteractable
 {
-    //JSON
-    private JSONManager jsonManager; // getter
-    //Editor
     [SerializeField] private GameObject plantChild; // assign in editor
     [SerializeField] private GameObject bugChild; // assign in editor
-    //Plant Attributes
-    private enum AgeState { Sprout, Mature }
-    private AgeState currentAge;
-    //JSONManager
-    private PlantModel[] plantTypes;
-    private SeedModel[] seedTypes;
-    private BugModel[] bugTypes;
     private PlantModel currentPlantType;
     private BugModel currentBugType;
-
-    private GameObject currentPlantSpritePrefab;
-
-
-    // pass seedtype during plant prefab instantiation to set plant type??
-    void Awake()
-    {
-        jsonManager = FindFirstObjectByType<JSONManager>();
-        if (jsonManager == null)
-        {
-            Debug.LogError("JSONManager not found.");
-        }
-    }
 
     public void InitializePlant(PlantModel plant)
     {
         currentPlantType = plant;
-        currentBugType = 
+        currentBugType = JSONManager.GetInstance().GetBugById(plant.bugId);
 
-        currentAge = AgeState.Sprout;
         boxCollider = gameObject.GetComponent<BoxCollider>();
         boxCollider.enabled = false;
 
         bugSprite = bugChild.GetComponent<SpriteRenderer>();
         plantSprite = plantChild.GetComponent<SpriteRenderer>();
 
+
+        bugSprite.sprite = Resources.Load<Sprite>("Bugs/" + currentBugType.id);
+        plantSprite.sprite = Resources.Load<Sprite>("Plants/" + plant.id);
+
         bugSprite.enabled = true;
         boxCollider.enabled = true;
-        hasBug = true;
 
-        SetModel(currentPlantType);
+        hasBug = true;
     }
 
     void Start()
     {
         StartCoroutine(BugSpawnTimer());
     }
-
-    private void Update()
-    {
-        //plant spawning debug keys
-        if (Input.GetKeyDown(KeyCode.L))
-        {
-            currentAge = AgeState.Mature;
-            Debug.Log(currentAge);
-        }
-        if (Input.GetKeyDown(KeyCode.K))
-        {
-            currentAge = AgeState.Sprout;
-            Debug.Log(currentAge);
-        }
-    }
-
-    #region Initilization
-    //TODO
-    private void SetModel(PlantModel currentPlantType)
-    {
-        try
-        {
-            currentPlantSpritePrefab = Resources.Load<GameObject>($"PlantPrefabs/{currentPlantType.prefab}");
-        }
-        catch
-        {
-            Debug.Log("PlantSprite prefab not found.");
-        }
-
-    }
-    #endregion
 
     #region IInteractable
     [SerializeField] private string _prompt;
@@ -114,7 +62,8 @@ public class Plant : MonoBehaviour, IInteractable
     {
         while (true)
         {
-            yield return new WaitForSeconds(currentSeedType.growthTime);
+            yield return new WaitForSeconds(currentBugType.spawnTime);
+            Debug.Log(currentBugType.spawnTime);
             if (!hasBug) SpawnNewBug();
         }
     }
@@ -128,7 +77,7 @@ public class Plant : MonoBehaviour, IInteractable
         }
         bugSprite.enabled = false;
         boxCollider.enabled = false;
-        GameDataManager.GetInstance().AddDiscoveredBug(currentPlantType.bugId);
+        GameDataManager.GetInstance().AddBug(currentPlantType.bugId);
 
 
         hasBug = false;
