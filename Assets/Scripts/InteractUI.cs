@@ -13,8 +13,16 @@ public class InteractUI : MonoBehaviour, IInteractable
     public string InteractionPrompt => _prompt;
     public bool Interact(PlayerController playerController)
     {
-        if (interactableUI.gameObject.activeSelf) Task.Run(async () => await ShopManager.GetInstance().ShopOutro());
-        else ShopManager.GetInstance().ShopIntro();
+        if (interactableUI.gameObject.activeSelf)
+        {
+            ShopManager.GetInstance().ShopOutro();
+            InventoryManager.GetInstance().ShowToolbar();
+        }
+        else
+        {
+            ShopManager.GetInstance().ShopIntro();
+            InventoryManager.GetInstance().HideToolbar();
+        }
 
         return true;
     }
