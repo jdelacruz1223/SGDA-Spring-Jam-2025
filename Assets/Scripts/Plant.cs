@@ -18,7 +18,7 @@ public class Plant : MonoBehaviour, IInteractable
     // pass seedtype during plant prefab instantiation to set plant type
     
     void Start() {
-
+        
         boxCollider = gameObject.GetComponent<BoxCollider>();
         boxCollider.enabled = false;
         StartCoroutine(BugSpawnTimer());

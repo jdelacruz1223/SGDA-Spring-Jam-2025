@@ -258,6 +258,10 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 9010685c4f448e84f80d463c9d2bc5ed, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  plantDatabase:
+    seeds: []
+    plants: []
+    bugs: []
 --- !u!1 &217471991
 GameObject:
   m_ObjectHideFlags: 0
@@ -3368,38 +3372,6 @@ PrefabInstance:
       propertyPath: m_LocalEulerAnglesHint.z
       value: 0
       objectReference: {fileID: 0}
-    - target: {fileID: 4956202083996119242, guid: 3d74faac03d25af43bfe8a7acd97be4b, type: 3}
-      propertyPath: m_ActionEvents.Array.size
-      value: 20
-      objectReference: {fileID: 0}
-    - target: {fileID: 4956202083996119242, guid: 3d74faac03d25af43bfe8a7acd97be4b, type: 3}
-      propertyPath: m_ActionEvents.Array.data[19].m_ActionId
-      value: 1d75eb06-cbd7-4d1f-93bb-7a47808a2c21
-      objectReference: {fileID: 0}
-    - target: {fileID: 4956202083996119242, guid: 3d74faac03d25af43bfe8a7acd97be4b, type: 3}
-      propertyPath: m_ActionEvents.Array.data[19].m_ActionName
-      value: Player/PlantSeed
-      objectReference: {fileID: 0}
-    - target: {fileID: 4956202083996119242, guid: 3d74faac03d25af43bfe8a7acd97be4b, type: 3}
-      propertyPath: m_ActionEvents.Array.data[8].m_PersistentCalls.m_Calls.Array.size
-      value: 0
-      objectReference: {fileID: 0}
-    - target: {fileID: 4956202083996119242, guid: 3d74faac03d25af43bfe8a7acd97be4b, type: 3}
-      propertyPath: m_ActionEvents.Array.data[19].m_PersistentCalls.m_Calls.Array.size
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4956202083996119242, guid: 3d74faac03d25af43bfe8a7acd97be4b, type: 3}
-      propertyPath: m_ActionEvents.Array.data[19].m_PersistentCalls.m_Calls.Array.data[0].m_Mode
-      value: 1
-      objectReference: {fileID: 0}
-    - target: {fileID: 4956202083996119242, guid: 3d74faac03d25af43bfe8a7acd97be4b, type: 3}
-      propertyPath: m_ActionEvents.Array.data[19].m_PersistentCalls.m_Calls.Array.data[0].m_Target
-      value: 
-      objectReference: {fileID: 2012030865}
-    - target: {fileID: 4956202083996119242, guid: 3d74faac03d25af43bfe8a7acd97be4b, type: 3}
-      propertyPath: m_ActionEvents.Array.data[19].m_PersistentCalls.m_Calls.Array.data[0].m_CallState
-      value: 2
-      objectReference: {fileID: 0}
     - target: {fileID: 8657679570337485733, guid: 3d74faac03d25af43bfe8a7acd97be4b, type: 3}
       propertyPath: _interactionPoint
       value: 
@@ -3413,17 +3385,6 @@ PrefabInstance:
     m_AddedGameObjects: []
     m_AddedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 3d74faac03d25af43bfe8a7acd97be4b, type: 3}
---- !u!114 &2012030865 stripped
-MonoBehaviour:
-  m_CorrespondingSourceObject: {fileID: 8657679570337485733, guid: 3d74faac03d25af43bfe8a7acd97be4b, type: 3}
-  m_PrefabInstance: {fileID: 2012030864}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 0}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: b05c24a6f009f6d4a80a178d89e9f81e, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!1 &2056345065
 GameObject:
   m_ObjectHideFlags: 0
