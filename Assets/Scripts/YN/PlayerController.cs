@@ -1,5 +1,7 @@
+using System;
 using System.Threading;
 using System.Threading.Tasks;
+using Unity.VisualScripting;
 using UnityEditor;
 using UnityEditor.Search;
 using UnityEngine;
@@ -211,12 +213,21 @@ public class PlayerController : MonoBehaviour
 
     public void UseSelectedItem()
     {
-        Item receivedItem = InventoryManager.GetInstance().GetSelectedItem(true);
+        Item receivedItem = null;
+        try {
+            receivedItem = InventoryManager.GetInstance().GetSelectedItem(true);
+        } catch (NullReferenceException e) {
+            Debug.LogError("Invalid/no item retrieved.");
+        }
 
-        if (receivedItem.type == ItemType.Seed)
+        if (receivedItem != null && receivedItem.type == ItemType.Seed)
         {
             SeedPlanter planter = GetComponent<SeedPlanter>();
             planter.PlantSeed(receivedItem.seedData, transform.position);
+        }
+        else {
+            Debug.Log("No item in hand.");
+            return;
         }
     }
     #endregion
