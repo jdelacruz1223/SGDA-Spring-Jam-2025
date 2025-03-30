@@ -484,7 +484,7 @@ GameObject:
   - component: {fileID: 5559497542188098760}
   m_Layer: 0
   m_Name: Player
-  m_TagString: Untagged
+  m_TagString: Plant
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -546,6 +546,7 @@ MonoBehaviour:
     serializedVersion: 2
     m_Bits: 64
   _numFound: 0
+  interactableCanvas: {fileID: 5430201907844087354}
   plantPrefab: {fileID: 0}
 --- !u!114 &4956202083996119242
 MonoBehaviour:

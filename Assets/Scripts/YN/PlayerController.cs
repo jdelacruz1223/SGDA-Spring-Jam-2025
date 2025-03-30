@@ -56,7 +56,7 @@ public class PlayerController : MonoBehaviour
         GetComponent<CameraController>().target = gameObject;
         Cursor.lockState = CursorLockMode.Locked; //lock cursor to play window
         Cursor.visible = false; //make cursor invisible
-
+        interactableCanvas.SetActive(false);
     }
 
     // Update is called once per frame
@@ -163,6 +163,7 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private LayerMask _interactableMask;
     [SerializeField] private int _numFound;
     private readonly Collider[] _colliders = new Collider[3];
+    [SerializeField] private GameObject interactableCanvas;
 
     /// <summary>
     /// Called when Interact action is performed.
@@ -184,9 +185,19 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
-        if (other.tag == "NPC")
+        if (other.tag == "NPC" || other.tag == "Plant")
         {
             ShopManager.GetInstance().ShopOutro();
+            Debug.Log("Exit Trigger");
+            interactableCanvas.SetActive(false);
+        }
+    }
+
+    private void OnTriggerEnter(Collider other)
+    {
+        if (other.tag == "NPC" || other.tag == "Plant") {
+            Debug.Log("Enter Trigger");
+            interactableCanvas.SetActive(true);
         }
     }
 
