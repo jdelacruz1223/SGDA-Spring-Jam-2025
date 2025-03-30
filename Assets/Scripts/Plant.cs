@@ -6,10 +6,12 @@ public class Plant : MonoBehaviour, IInteractable
     //JSON
     private JSONManager jsonManager; // getter
     //Editor
-    [SerializeField] private GameObject model; // assign in editor
+    [SerializeField] private GameObject plantChild; // assign in editor
+    [SerializeField] private GameObject bugChild; // assign in editor
     //Plant Attributes
     private enum AgeState { Sprout, Mature }
     private AgeState currentAge; 
+    //JSONManager
     private PlantModel[] plantTypes;
     private SeedModel[] seedTypes;
     private BugModel[] bugTypes;
@@ -18,7 +20,7 @@ public class Plant : MonoBehaviour, IInteractable
     private BugModel currentBugType;
 
 
-    // pass seedtype during plant prefab instantiation to set plant type
+    // pass seedtype during plant prefab instantiation to set plant type??
     void Awake() {
         jsonManager = FindFirstObjectByType<JSONManager>();
         if (jsonManager == null) {
@@ -34,10 +36,19 @@ public class Plant : MonoBehaviour, IInteractable
         currentSeedType = seedTypes[0];
         currentBugType = bugTypes[0];
 
+        //write and call function that sets this plant object's planttype
+        
         currentAge = AgeState.Sprout;        
         boxCollider = gameObject.GetComponent<BoxCollider>();
         boxCollider.enabled = false;
-        bugSprite = bugObject.GetComponent<SpriteRenderer>();
+
+        bugSprite = bugChild.GetComponent<SpriteRenderer>();
+        plantSprite = plantChild.GetComponent<SpriteRenderer>();
+
+        bugSprite.enabled = true;
+        boxCollider.enabled = true;
+        hasBug = true;
+
         StartCoroutine(BugSpawnTimer());
     }
 
@@ -68,10 +79,10 @@ public class Plant : MonoBehaviour, IInteractable
     #endregion
 
     #region Bug Handling
-    [SerializeField] private GameObject bugObject;
     private SpriteRenderer bugSprite;
+    private SpriteRenderer plantSprite;
     private BoxCollider boxCollider; // toggle collider for interaction
-    private bool hasBug = false;
+    [SerializeField] private bool hasBug = false;
 
     
     /// <summary>
@@ -88,7 +99,7 @@ public class Plant : MonoBehaviour, IInteractable
 
     private void TakeBug()
     {
-        if (hasBug)
+        if (!hasBug)
         {
             Debug.Log("No bug to take :(");
             return;
