@@ -744,6 +744,11 @@ MonoBehaviour:
   instructionBackground: {fileID: 822199045}
   pressToShow: Press Tab to show instructions
   pressToHide: Press Tab to hide instructions
+  sceneUnknown: 'I can''t find the component in this scene to determine what scene
+    this is.
+
+
+    For the main level, I look for a PlayerController component.'
 --- !u!1 &1622288469
 GameObject:
   m_ObjectHideFlags: 0

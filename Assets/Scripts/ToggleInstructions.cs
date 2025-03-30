@@ -12,11 +12,14 @@ public class ToggleInstructions : MonoBehaviour
     [Header("Text to Show")]
     [SerializeField] string pressToShow = "Press Tab to show instructions";
     [SerializeField] string pressToHide = "Press Tab to hide instructions";
-    
+    [TextArea] [SerializeField] string instructionText = "";
+
     bool isPressToShow;
 
     void Start()
     {
+        instructions.text = instructionText;
+
         ChangeToPressToShow();
         isPressToShow = true;
     }
