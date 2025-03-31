@@ -6,8 +6,8 @@ using UnityEngine;
 
 public class Plant : MonoBehaviour, IInteractable
 {
-    [SerializeField] private GameObject plantChild; // assign in editor
-    [SerializeField] private GameObject bugChild; // assign in editor
+    [SerializeField] private GameObject plantChild;
+    [SerializeField] private GameObject bugChild;
     private PlantModel currentPlantType;
     private BugModel currentBugType;
 
@@ -97,5 +97,3 @@ public class Plant : MonoBehaviour, IInteractable
     }
     #endregion
 }
-
-
