@@ -6,6 +6,7 @@ using Unity.VisualScripting;
 using UnityEditor;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using System.Collections;
 
 interface IInteractable
 {
@@ -66,7 +67,7 @@ public class PlayerController : MonoBehaviour
         TryMove();
         _numFound = Physics.OverlapSphereNonAlloc(_interactionPoint.position, _interactionPointRadius, _colliders, _interactableMask);
         AnimatePlayer(moveDir);
-        
+
     }
 
     #region Animation
@@ -74,41 +75,49 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private SpriteRenderer sprite;
     private bool isMoving;
 
-    private void AnimatePlayer(Vector2 moveDir) {
+    private void AnimatePlayer(Vector2 moveDir)
+    {
         Debug.Log("Animation");
-        if (isMoving) {
-        string direction = GetDirection(moveDir);
+        if (isMoving)
+        {
+            string direction = GetDirection(moveDir);
 
-        animator.SetBool("isMoving", true);
+            animator.SetBool("isMoving", true);
 
-        switch (direction) {
-            case "right":
-                sprite.flipX = false;
-                animator.SetInteger("state", 1);
-                break;
-            case "left":
-                sprite.flipX = true;
-                animator.SetInteger("state", 2);
-                break;
-            case "up":
-                animator.SetInteger("state", 3);
-                break;
-            case "down":
-                animator.SetInteger("state", 4);
-                break;
+            switch (direction)
+            {
+                case "right":
+                    sprite.flipX = false;
+                    animator.SetInteger("state", 1);
+                    break;
+                case "left":
+                    sprite.flipX = true;
+                    animator.SetInteger("state", 2);
+                    break;
+                case "up":
+                    animator.SetInteger("state", 3);
+                    break;
+                case "down":
+                    animator.SetInteger("state", 4);
+                    break;
+            }
         }
-        } else {
+        else
+        {
             animator.SetBool("isMoving", false);
             animator.SetInteger("state", 0);
         }
     }
 
-    private string GetDirection(Vector2 moveDir) {
+    private string GetDirection(Vector2 moveDir)
+    {
         moveDir = moveDir.normalized;
-        if (Mathf.Abs(moveDir.x) > Mathf.Abs(moveDir.y)) {
+        if (Mathf.Abs(moveDir.x) > Mathf.Abs(moveDir.y))
+        {
             return moveDir.x > 0 ? "right" : "left";
         }
-        else {
+        else
+        {
             return moveDir.y > 0 ? "up" : "down";
         }
     }
@@ -123,6 +132,9 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     public void TryMove()
     {
+        // Don't try to move if the CharacterController is disabled
+        if (!cc.enabled) return;
+
         if (moveHeld)
         {
             speedUp();
@@ -142,22 +154,23 @@ public class PlayerController : MonoBehaviour
     /// <param name="ctx">The context of the input action</param>
     public void OnMove(InputAction.CallbackContext ctx)
     {
+        // Don't process movement when shop or inventory is open
+        if (ShopManager.GetInstance().IsOpen() || InventoryManager.GetInstance().IsInventoryOpen())
+        {
+            moveDir = Vector2.zero;
+            moveHeld = false;
+            return;
+        }
+
         if (ctx.canceled)
         {
             moveHeld = false;
-            isMoving = false;
-
+            moveDir = Vector2.zero;
         }
         else
         {
-            isMoving = true;
-            var newDir = ctx.ReadValue<Vector2>();
-            if (newDir.normalized != moveDir.normalized)
-            { //if the new direction is different from the old direction
-                //speed = 0;
-            }
             moveHeld = true;
-            moveDir = newDir;
+            moveDir = ctx.ReadValue<Vector2>();
         }
         AnimatePlayer(moveDir);
     }
@@ -205,6 +218,10 @@ public class PlayerController : MonoBehaviour
     /// <param name="ctx">The context of the input action</param>
     public void OnLook(InputAction.CallbackContext ctx)
     {
+        // Don't process look input when shop or inventory is open
+        if (ShopManager.GetInstance().IsOpen() || InventoryManager.GetInstance().IsInventoryOpen())
+            return;
+
         var rot = ctx.ReadValue<Vector2>();
         transform.Rotate(Vector3.up, rot.x * Time.deltaTime);
     }
@@ -225,6 +242,9 @@ public class PlayerController : MonoBehaviour
     {
         if (ctx.started)
         {
+            if (ShopManager.GetInstance().IsOpen() || InventoryManager.GetInstance().IsInventoryOpen())
+                return;
+
             if (_numFound > 0)
             {
                 var interactable = _colliders[0].GetComponent<IInteractable>();
@@ -243,10 +263,20 @@ public class PlayerController : MonoBehaviour
             if (ShopManager.GetInstance().ShopPanelRect.gameObject.activeSelf)
             {
                 Debug.Log("Exit Trigger");
-                ShopManager.GetInstance().ShopOutro();
+                StartCoroutine(HandleShopCloseOnExit());
                 interactableCanvas.SetActive(false);
             }
         }
+    }
+
+    private IEnumerator HandleShopCloseOnExit()
+    {
+        var operation = ShopManager.GetInstance().ShopOutro();
+        while (!operation.IsCompleted)
+        {
+            yield return null;
+        }
+        EnablePlayerMovement();
     }
 
     private void OnTriggerEnter(Collider other)
@@ -271,7 +301,9 @@ public class PlayerController : MonoBehaviour
     #region Planting
     public void OnPlantSeed(InputAction.CallbackContext ctx)
     {
-        // possible edge case: what happens when slot is empty or not a bug?
+        if (ShopManager.GetInstance().IsOpen() || InventoryManager.GetInstance().IsInventoryOpen())
+            return;
+
         if (ctx.started)
         {
             UseSelectedItem();
@@ -311,7 +343,11 @@ public class PlayerController : MonoBehaviour
     {
         if (!ctx.started) return;
 
-        ShopManager.GetInstance().ShopOutro();
+        // Don't allow opening inventory when shop is open
+        if (ShopManager.GetInstance().IsOpen()) return;
+
+        // Handle both UI elements as awaitable tasks
+        await ShopManager.GetInstance().ShopOutro();
 
         Debug.Log("InventoryPressed");
 
@@ -320,18 +356,35 @@ public class PlayerController : MonoBehaviour
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
 
+            // Both methods now return proper awaitable Tasks
             await InventoryManager.GetInstance().InventoryOutro();
             await Task.Delay(50);
             inventoryUI.SetActive(false);
+            EnablePlayerMovement();
         }
         else
         {
+            DisablePlayerMovement();
             Cursor.lockState = CursorLockMode.None;
             inventoryUI.SetActive(true);
             await Task.Delay(50);
-            InventoryManager.GetInstance().InventoryIntro();
+            await InventoryManager.GetInstance().InventoryIntro();
             Cursor.visible = true;
         }
+    }
+
+    public void EnablePlayerMovement()
+    {
+        // Enable character controller and reset movement state
+        if (cc != null) cc.enabled = true;
+        moveDir = Vector2.zero;
+        moveHeld = false;
+    }
+
+    public void DisablePlayerMovement()
+    {
+        // Disable character controller to prevent movement
+        if (cc != null) cc.enabled = false;
     }
     #endregion
 }

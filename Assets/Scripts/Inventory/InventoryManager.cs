@@ -18,6 +18,9 @@ public class InventoryManager : MonoBehaviour
     public CanvasGroup DarkBackground;
     [SerializeField] public float tweenDuration = 0.5f;
 
+    [SerializeField] private bool isInventoryOpen = false;
+    private bool isAnimating = false;
+
     public static InventoryManager GetInstance() { return me; }
     public static InventoryManager me;
 
@@ -26,6 +29,16 @@ public class InventoryManager : MonoBehaviour
     void Start()
     {
         ChangeSelectedSlot(0);
+
+        if (MainInventorRect != null)
+        {
+            MainInventorRect.gameObject.SetActive(false);
+        }
+
+        if (DarkBackground != null)
+        {
+            DarkBackground.alpha = 0;
+        }
     }
 
     void Update()
@@ -152,35 +165,72 @@ public class InventoryManager : MonoBehaviour
         }
     }
 
-    public void InventoryIntro()
+    public async Task InventoryIntro()
     {
-        AudioManager.GetInstance().PlayPanelEffect(true);
+        if (isInventoryOpen || isAnimating) return;
 
-        DarkBackground.alpha = 0;
-        DarkBackground.DOFade(1, tweenDuration).SetUpdate(true);
+        isAnimating = true;
+
+        DarkBackground.gameObject.SetActive(true);
+        MainInventorRect.gameObject.SetActive(true);
 
         MainInventorRect.anchoredPosition = new Vector2(0, 430);
-        MainInventorRect.DOKill();
-        MainInventorRect.DOAnchorPosY(0, tweenDuration).SetUpdate(true);
+        DarkBackground.alpha = 0;
+
+        TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
+
+        Sequence sequence = DOTween.Sequence().SetUpdate(true);
+
+        sequence.Append(DarkBackground.DOFade(1, tweenDuration * 0.5f));
+        sequence.Append(MainInventorRect.DOAnchorPosY(0, tweenDuration))
+            .OnStart(() => AudioManager.GetInstance().PlayPanelEffect(true))
+            .OnComplete(() =>
+            {
+                isInventoryOpen = true;
+                isAnimating = false;
+                tcs.SetResult(true);
+            });
+
+        await tcs.Task;
     }
 
     public async Task InventoryOutro()
     {
-        AudioManager.GetInstance().PlayPanelEffect(false);
+        if (!isInventoryOpen || isAnimating) return;
 
-        DarkBackground.DOFade(0, tweenDuration).SetUpdate(true);
-        MainInventorRect.DOKill();
-        await MainInventorRect.DOAnchorPosY(430, tweenDuration).SetUpdate(true).AsyncWaitForCompletion();
+        isAnimating = true;
+
+        Sequence sequence = DOTween.Sequence().SetUpdate(true);
+
+        TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
+
+        sequence.Append(MainInventorRect.DOAnchorPosY(430, tweenDuration))
+            .OnStart(() => AudioManager.GetInstance().PlayPanelEffect(false));
+        sequence.Append(DarkBackground.DOFade(0, tweenDuration * 0.5f))
+            .OnComplete(() =>
+            {
+                MainInventorRect.gameObject.SetActive(false);
+                DarkBackground.gameObject.SetActive(false);
+                isInventoryOpen = false;
+                isAnimating = false;
+                tcs.SetResult(true);
+            });
+
+        await tcs.Task;
     }
 
     public void ShowToolbar()
     {
+        if (ToolbarRect == null) return;
+
         ToolbarRect.DOKill();
         ToolbarRect.DOAnchorPosY(0, tweenDuration).SetUpdate(true);
     }
 
     public void HideToolbar()
     {
+        if (ToolbarRect == null) return;
+
         ToolbarRect.DOKill();
         ToolbarRect.DOAnchorPosY(-75, tweenDuration).SetUpdate(true);
     }
@@ -202,5 +252,10 @@ public class InventoryManager : MonoBehaviour
         }
 
         return bugs;
+    }
+
+    public bool IsInventoryOpen()
+    {
+        return isInventoryOpen;
     }
 }

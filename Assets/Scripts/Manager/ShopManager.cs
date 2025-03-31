@@ -1,4 +1,5 @@
 using System;
+using System.Collections;
 using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Linq;
@@ -19,7 +20,10 @@ public class ShopManager : MonoBehaviour
     public TextMeshProUGUI currencyTxt;
 
     [SerializeField] public RectTransform ShopPanelRect;
-    [SerializeField] public float tweenDuration;
+    [SerializeField] public float tweenDuration = 0.3f;
+
+    [SerializeField] private bool isOpen = false;
+    private bool isAnimating = false;
 
     private Item[] sortedSeeds;
     private Item[] sortedBugs;
@@ -35,6 +39,12 @@ public class ShopManager : MonoBehaviour
         }
 
         me = this;
+
+        // Ensure shop is hidden on start
+        if (ShopPanelRect != null)
+        {
+            ShopPanelRect.gameObject.SetActive(false);
+        }
     }
 
     void Start()
@@ -96,6 +106,7 @@ public class ShopManager : MonoBehaviour
 
     public void SellBug(int index)
     {
+        AudioManager.GetInstance().PlaySellSound();
         GameDataManager.GetInstance().AddCurrency(sortedBugs[index].bugData.price);
         InventoryManager.GetInstance().RemoveItem(sortedBugs[index], true);
         UpdateShopUI();
@@ -106,6 +117,7 @@ public class ShopManager : MonoBehaviour
 
     public void BuySeed(int index)
     {
+        AudioManager.GetInstance().PlayBuySound();
         if (GameDataManager.GetInstance().SpendCurrency(sortedSeeds[index].seedData.price)) InventoryManager.GetInstance().AddItem(sortedSeeds[index]);
         else Debug.Log("Can't Afford! You only have " + GameDataManager.GetInstance().playerCurrency);
 
@@ -117,28 +129,91 @@ public class ShopManager : MonoBehaviour
         currencyTxt.text = GameDataManager.GetInstance().playerCurrency + " coins";
     }
 
-    public void ShopIntro()
+    public async Task ShopIntro()
     {
-        AudioManager.GetInstance().PlayPanelEffect(true);
+        if (isOpen || isAnimating) return;
+
+        isAnimating = true;
         ObservableCollection<Item> bugs = InventoryManager.GetInstance().GetAllBugs();
         PopulateBugList(bugs);
 
         InventoryManager.GetInstance().HideToolbar();
-        ShopPanelRect.DOKill();
-        ShopPanelRect.DOAnchorPosY(0, tweenDuration).SetUpdate(true);
-        Cursor.lockState = CursorLockMode.Confined;
-        Cursor.visible = true;
         ShopPanelRect.gameObject.SetActive(true);
+
+        // Disable player movement when shop opens
+        PlayerController player = FindFirstObjectByType<PlayerController>();
+        if (player != null) player.DisablePlayerMovement();
+
+        ShopPanelRect.anchoredPosition = new Vector2(ShopPanelRect.anchoredPosition.x, 430);
+
+        TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
+
+        ShopPanelRect.DOKill();
+        ShopPanelRect.DOAnchorPosY(0, tweenDuration)
+            .SetUpdate(true)
+            .OnStart(() => AudioManager.GetInstance().PlayPanelEffect(true))
+            .OnComplete(() =>
+            {
+                Cursor.lockState = CursorLockMode.Confined;
+                Cursor.visible = true;
+                isOpen = true;
+                isAnimating = false;
+                tcs.SetResult(true);
+            });
+
+        await tcs.Task;
     }
 
-    async public void ShopOutro()
+    public async Task ShopOutro()
     {
-        AudioManager.GetInstance().PlayPanelEffect(false);
+        if (!isOpen || isAnimating) return;
+
+        isAnimating = true;
         InventoryManager.GetInstance().ShowToolbar();
-        Cursor.lockState = CursorLockMode.Locked;
-        Cursor.visible = false;
+
+        TaskCompletionSource<bool> tcs = new TaskCompletionSource<bool>();
+
         ShopPanelRect.DOKill();
-        await Task.Run(async () => await ShopPanelRect.DOAnchorPosY(430, tweenDuration).SetUpdate(true).AsyncWaitForCompletion());
-        ShopPanelRect.gameObject.SetActive(false);
+        ShopPanelRect.DOAnchorPosY(430, tweenDuration)
+            .SetUpdate(true)
+            .OnStart(() => AudioManager.GetInstance().PlayPanelEffect(false))
+            .OnComplete(() =>
+            {
+                Cursor.lockState = CursorLockMode.Locked;
+                Cursor.visible = false;
+                ShopPanelRect.gameObject.SetActive(false);
+                isOpen = false;
+                isAnimating = false;
+                if (!InventoryManager.GetInstance().IsInventoryOpen())
+                {
+                    PlayerController player = FindFirstObjectByType<PlayerController>();
+                    if (player != null) player.EnablePlayerMovement();
+                }
+                tcs.SetResult(true);
+            });
+
+        await tcs.Task;
+    }
+
+    public bool IsOpen()
+    {
+        return isOpen;
+    }
+
+    public void CloseShopButton()
+    {
+        if (isOpen && !isAnimating)
+        {
+            StartCoroutine(CloseShopCoroutine());
+        }
+    }
+
+    private IEnumerator CloseShopCoroutine()
+    {
+        var operation = ShopOutro();
+        while (!operation.IsCompleted)
+        {
+            yield return null;
+        }
     }
 }
