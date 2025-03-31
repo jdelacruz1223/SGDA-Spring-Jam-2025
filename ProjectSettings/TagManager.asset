@@ -6,6 +6,7 @@ TagManager:
   tags:
   - NPC
   - Plant
+  - Tree Goal
   layers:
   - Default
   - TransparentFX
