@@ -30,7 +30,7 @@ public class BugMovement : MonoBehaviour
 
         if (collision.gameObject.tag == "Tree Goal") { // player wins
             endText.text = winText;
-            //GameDataManager.GetInstance().AddBug(GameDataManager.GetInstance().currentBug.id);
+            GameDataManager.GetInstance().AddBug(GameDataManager.GetInstance().currentBug.id);
         }
         else { // player loses
             endText.text = loseText;
