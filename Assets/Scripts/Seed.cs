@@ -53,7 +53,7 @@ public class Seed : MonoBehaviour
 
     public void Grow()
     {
-        Debug.Log($"{plantData.name} has grown!");
+        // Debug.Log($"{plantData.name} has grown!");
         timerTxt.text = plantData.name + " has grown!";
         StartCoroutine(GrowCoroutine());
     }
