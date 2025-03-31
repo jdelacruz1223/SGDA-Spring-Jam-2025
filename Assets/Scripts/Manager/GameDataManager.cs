@@ -35,7 +35,6 @@ public class GameDataManager : MonoBehaviour
         }
 
         me = this;
-        DontDestroyOnLoad(gameObject);
     }
 
     public void AddBug(string id)

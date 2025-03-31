@@ -6,7 +6,7 @@
       "plantId": "plant_daisy",
       "stackable": true,
       "price": 5,
-      "growthTime": 10,
+      "growthTime": 1,
       "description": "Grows into a beautiful Daisy Flower."
     },
     {
@@ -15,7 +15,7 @@
       "plantId": "dichill_plant",
       "stackable": true,
       "price": 5,
-      "growthTime": 10,
+      "growthTime": 1,
       "description": "Grows into a beautiful Dichill Flower."
     }
   ],

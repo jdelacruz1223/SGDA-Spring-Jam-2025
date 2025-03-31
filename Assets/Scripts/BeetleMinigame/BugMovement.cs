@@ -13,13 +13,40 @@ public class BugMovement : MonoBehaviour
     [SerializeField] string winText = "YOU CAUGHT THE BUG!";
     [SerializeField] string loseText = "YOU FAILED TO CATCH IT!";
     [SerializeField] TextMeshProUGUI endText;
+    [SerializeField] string readyText = "GET READY AND PLACE CURSOR ON BUG!";
 
     Vector3 moveInput = Vector3.zero;
-    bool isDone = false;
+    public bool isDone = false;
+    public bool isReady = false;
+
+    void Start()
+    {
+        if (endText != null)
+        {
+            endText.text = readyText;
+        }
+    }
 
     public void UpdateMoveVector(Vector3 mv)
     {
         moveInput = mv;
+    }
+
+    public void TimeOut()
+    {
+        if (isDone) return;
+
+        isDone = true;
+        endText.text = loseText;
+    }
+
+    public void SetReady()
+    {
+        isReady = true;
+        if (endText != null)
+        {
+            endText.text = "";
+        }
     }
 
     void OnCollisionEnter(Collision collision)
@@ -28,25 +55,22 @@ public class BugMovement : MonoBehaviour
 
         isDone = true;
 
-        if (collision.gameObject.tag == "Tree Goal") { // player wins
+        if (collision.gameObject.tag == "Tree Goal")
+        { // player wins
             endText.text = winText;
-            //GameDataManager.GetInstance().AddBug(GameDataManager.GetInstance().currentBug.id);
+            GameDataManager.GetInstance().AddBug(GameDataManager.GetInstance().currentBug.id);
         }
-        else { // player loses
+        else
+        { // player loses
             endText.text = loseText;
         }
 
-        Invoke("ReturnToMainGame", sceneChangeDelay);
+        GameDataManager.GetInstance().currentBug = null;
     }
 
     void FixedUpdate()
     {
-        if (isDone) return;
+        if (isDone || !isReady) return;
         rb.AddForce(moveInput * moveForce);
-    }
-
-    void ReturnToMainGame()
-    {
-        SceneManager.LoadScene("Garden");
     }
 }
