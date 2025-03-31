@@ -24,6 +24,7 @@ public class GameDataManager : MonoBehaviour
     public int totalPlantsGrown;
     public int totalMoneyEarned;
     public int totalMoneySpent;
+    public BugModel currentBug;
 
     void Awake()
     {
