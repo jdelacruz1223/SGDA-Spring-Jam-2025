@@ -266,7 +266,6 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region Planting
-    [SerializeField] private GameObject plantPrefab;
     public void OnPlantSeed(InputAction.CallbackContext ctx)
     {
         // possible edge case: what happens when slot is empty or not a bug?
