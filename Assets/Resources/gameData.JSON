@@ -1,52 +1,118 @@
 {
   "seeds": [
     {
-      "id": "seed_daisyseed",
+      "id": "seed_daisy",
       "name": "Daisy Seed",
       "plantId": "plant_daisy",
       "stackable": true,
-      "price": 5,
-      "growthTime": 10,
-      "description": "Grows into a beautiful Daisy Flower."
+      "price": 10,
+      "growthTime": 30,
+      "description": "Grows into a pure white Daisy."
     },
     {
-      "id": "seed_dichill",
-      "name": "Dichill Seed",
-      "plantId": "dichill_plant",
+      "id": "seed_daisy2",
+      "name": "Gaillardia Daisy Seed",
+      "plantId": "plant_daisy2",
       "stackable": true,
-      "price": 5,
-      "growthTime": 10,
-      "description": "Grows into a beautiful Dichill Flower."
+      "price": 30,
+      "growthTime": 60,
+      "description": "Grows into a vibrant Gaillardia Daisy."
+    },
+    {
+      "id": "seed_daisy3",
+      "name": "Margeurite Daisy Seed",
+      "plantId": "plant_daisy3",
+      "stackable": true,
+      "price": 90,
+      "growthTime": 120,
+      "description": "Grows into a stunning Margeurite Daisy."
+    },
+    {
+      "id": "seed_lily",
+      "name": "Asiatic Tango Lily Seed",
+      "plantId": "plant_lily1",
+      "stackable": true,
+      "price": 270,
+      "growthTime": 240,
+      "description": "Grows into a pink- three flowered lily."
+    },
+    {
+      "id": "seed_lily2",
+      "name": "Purple Dream Lily Seed",
+      "plantId": "plant_lily2",
+      "stackable": true,
+      "price": 270,
+      "growthTime": 240,
+      "description": "Grows into a purple lily with two open flowers and one closed flower."
     }
   ],
   "plants": [
     {
       "id": "plant_daisy",
       "name": "Daisy",
-      "bugId": "justin"
+      "bugId": "bug_butterfly"
     },
     {
-      "id": "dichill_plant",
-      "name": "Dichill",
+      "id": "plant_daisy2",
+      "name": "Gaillardia Daisy",
       "bugId": "bug_beetle"
+    },
+    {
+      "id": "plant_daisy3",
+      "name": "Margeurite Daisy ",
+      "bugId": "bug_bee"
+    },
+    {
+      "id": "plant_lily1",
+      "name": "Asiatic Tango Lily",
+      "bugId": "bug_aphid"
+    },
+    {
+      "id": "plant_lily2",
+      "name": "Purple Dream Lily",
+      "bugId": "bug_ladybug"
     }
   ],
   "bugs": [
     {
-      "id": "justin",
-      "name": "Justin",
+      "id": "bug_butterfly",
+      "name": "Hoangiful Butterfly",
       "stackable": true,
       "price": 5,
-      "spawnTime": 10,
-      "description": "This Justin is a bug!"
+      "spawnTime": 15,
+      "description": "Smells like coke."
     },
     {
       "id": "bug_beetle",
-      "name": "Beetle",
+      "name": "Mattis Beetle",
       "stackable": true,
-      "price": 5,
-      "spawnTime": 10,
-      "description": "Buh-Buh-Beetle!"
+      "price": 15,
+      "spawnTime": 30,
+      "description": "Looking for an elden ring."
+    },
+    {
+      "id": "bug_bee",
+      "name": "Daricius Bee",
+      "stackable": true,
+      "price": 45,
+      "spawnTime": 60,
+      "description": "Type ..?"
+    },
+    {
+      "id": "bug_aphid",
+      "name": "Christinous Jomar Aphid",
+      "stackable": true,
+      "price": 135,
+      "spawnTime": 120,
+      "description": "I wish he was here.."
+    },
+    {
+      "id": "bug_ladybug",
+      "name": "Jake the Ladybug",
+      "stackable": true,
+      "price": 135,
+      "spawnTime": 120,
+      "description": "I'll never financially recover from this."
     }
   ]
 }
