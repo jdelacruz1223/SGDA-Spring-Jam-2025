@@ -75,12 +75,9 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private SpriteRenderer sprite;
     private bool isMoving;
 
-    private void AnimatePlayer(Vector2 moveDir)
-    {
-        Debug.Log("Animation");
-        if (isMoving)
-        {
-            string direction = GetDirection(moveDir);
+    private void AnimatePlayer(Vector2 moveDir) {
+        if (isMoving) {
+        string direction = GetDirection(moveDir);
 
             animator.SetBool("isMoving", true);
 

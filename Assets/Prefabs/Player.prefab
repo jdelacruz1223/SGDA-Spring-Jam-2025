@@ -543,8 +543,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   target: {fileID: 0}
-  distance: 5
-  height: 2
+  distance: 4.43
+  height: 0.96
   smoothing: 0.15
 --- !u!114 &8657679570337485733
 MonoBehaviour:
@@ -558,10 +558,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b05c24a6f009f6d4a80a178d89e9f81e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  maxSpeed: 10
-  sprintMultipler: 1.25
-  acceleration: 1.25
-  deceleration: 0.75
+  maxSpeed: 5
+  sprintMultipler: 1.75
+  moveDir: {x: 0, y: 0}
+  acceleration: 1.5
+  deceleration: 0.5
   animator: {fileID: 5396625986846993755}
   sprite: {fileID: 9159892976729768353}
   _interactionPoint: {fileID: 6611731779589284443}
@@ -571,7 +572,6 @@ MonoBehaviour:
     m_Bits: 64
   _numFound: 0
   interactableCanvas: {fileID: 5430201907844087354}
-  plantPrefab: {fileID: 0}
 --- !u!114 &4956202083996119242
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -776,13 +776,13 @@ CharacterController:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Height: 2
-  m_Radius: 0.5
+  m_Height: 1
+  m_Radius: 0.1
   m_SlopeLimit: 45
   m_StepOffset: 0.3
   m_SkinWidth: 0.08
   m_MinMoveDistance: 0.001
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Center: {x: 0, y: 0.46, z: 0}
 --- !u!114 &5559497542188098760
 MonoBehaviour:
   m_ObjectHideFlags: 0
