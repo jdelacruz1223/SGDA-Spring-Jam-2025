@@ -75,6 +75,8 @@ public class Plant : MonoBehaviour, IInteractable
             Debug.Log("No bug to take :(");
             return;
         }
+
+        AudioManager.GetInstance().PlayHarvestSound();
         bugSprite.enabled = false;
         boxCollider.enabled = false;
         GameDataManager.GetInstance().AddBug(currentPlantType.bugId);
