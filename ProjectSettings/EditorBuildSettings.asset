@@ -5,10 +5,10 @@ EditorBuildSettings:
   m_ObjectHideFlags: 0
   serializedVersion: 2
   m_Scenes:
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/DT/Dev.unity
     guid: 57117672a4ef5bf4eb5fc7c4d689ec44
-  - enabled: 1
+  - enabled: 0
     path: Assets/Scenes/FinalScenes/BeetleMinigame.unity
     guid: 8b5f2423abe8842df9abe2851a015663
   - enabled: 1

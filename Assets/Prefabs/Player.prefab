@@ -563,6 +563,7 @@ MonoBehaviour:
   moveDir: {x: 0, y: 0}
   acceleration: 1.5
   deceleration: 0.5
+  inventoryUI: {fileID: 0}
   animator: {fileID: 5396625986846993755}
   sprite: {fileID: 9159892976729768353}
   _interactionPoint: {fileID: 6611731779589284443}

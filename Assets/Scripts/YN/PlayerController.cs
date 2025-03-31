@@ -158,17 +158,21 @@ public class PlayerController : MonoBehaviour
         {
             moveDir = Vector2.zero;
             moveHeld = false;
+            isMoving = false;
             return;
         }
 
         if (ctx.canceled)
         {
             moveHeld = false;
+            isMoving = false;
             moveDir = Vector2.zero;
+            
         }
         else
         {
             moveHeld = true;
+            isMoving = true;
             moveDir = ctx.ReadValue<Vector2>();
         }
         AnimatePlayer(moveDir);
@@ -257,13 +261,14 @@ public class PlayerController : MonoBehaviour
 
     private void OnTriggerExit(Collider other)
     {
+        interactableCanvas.SetActive(false);
         if (other.tag == "NPC" || other.tag == "Plant")
         {
             if (ShopManager.GetInstance().ShopPanelRect.gameObject.activeSelf)
             {
                 Debug.Log("Exit Trigger");
                 StartCoroutine(HandleShopCloseOnExit());
-                interactableCanvas.SetActive(false);
+                
             }
         }
     }

@@ -136,6 +136,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   plantChild: {fileID: 3038046280102373254}
   bugChild: {fileID: 8940387433680878192}
+  beetleMinigamePrefab: {fileID: 0}
   _prompt: 
   hasBug: 0
 --- !u!65 &8421595396491905510
@@ -157,8 +158,8 @@ BoxCollider:
   m_ProvidesContacts: 0
   m_Enabled: 1
   serializedVersion: 3
-  m_Size: {x: 1, y: 2, z: 1}
-  m_Center: {x: 0, y: 0, z: 0}
+  m_Size: {x: 4.4873247, y: 5.1549754, z: 4.196983}
+  m_Center: {x: -0.22286898, y: 1.5774884, z: 0.036908858}
 --- !u!1 &8940387433680878192
 GameObject:
   m_ObjectHideFlags: 0
