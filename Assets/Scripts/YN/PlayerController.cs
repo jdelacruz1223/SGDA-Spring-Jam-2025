@@ -48,8 +48,9 @@ public class PlayerController : MonoBehaviour
     /// </summary>
     CharacterController cc;
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+    [SerializeField] public GameObject inventoryUI;
 
-    
+
     void Start()
     {
         if (cc == null) cc = GetComponent<CharacterController>();
@@ -57,8 +58,6 @@ public class PlayerController : MonoBehaviour
         Cursor.lockState = CursorLockMode.Locked; //lock cursor to play window
         Cursor.visible = false; //make cursor invisible
         interactableCanvas.SetActive(false);
-        inventoryUI = GameObject.Find("MainInventoryGroup");
-
     }
 
     // Update is called once per frame
@@ -189,15 +188,19 @@ public class PlayerController : MonoBehaviour
     {
         if (other.tag == "NPC" || other.tag == "Plant")
         {
-            ShopManager.GetInstance().ShopOutro();
-            Debug.Log("Exit Trigger");
-            interactableCanvas.SetActive(false);
+            if (ShopManager.GetInstance().ShopPanelRect.gameObject.activeSelf)
+            {
+                Debug.Log("Exit Trigger");
+                ShopManager.GetInstance().ShopOutro();
+                interactableCanvas.SetActive(false);
+            }
         }
     }
 
     private void OnTriggerEnter(Collider other)
     {
-        if (other.tag == "NPC" || other.tag == "Plant") {
+        if (other.tag == "NPC" || other.tag == "Plant")
+        {
             Debug.Log("Enter Trigger");
             interactableCanvas.SetActive(true);
         }
@@ -214,7 +217,6 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region Planting
-    [SerializeField] private GameObject plantPrefab;
     public void OnPlantSeed(InputAction.CallbackContext ctx)
     {
         // possible edge case: what happens when slot is empty or not a bug?
@@ -240,6 +242,7 @@ public class PlayerController : MonoBehaviour
 
         if (receivedItem != null && receivedItem.type == ItemType.Seed)
         {
+            AudioManager.GetInstance().PlayPlantSound();
             SeedPlanter planter = GetComponent<SeedPlanter>();
             planter.PlantSeed(receivedItem.seedData, transform.position);
         }
@@ -252,8 +255,6 @@ public class PlayerController : MonoBehaviour
     #endregion
 
     #region Inventory
-    // [SerializeField] GameObject inventoryUI;
-    GameObject inventoryUI;
     public async void OnInventory(InputAction.CallbackContext ctx)
     {
         if (!ctx.started) return;
@@ -261,6 +262,7 @@ public class PlayerController : MonoBehaviour
         ShopManager.GetInstance().ShopOutro();
 
         Debug.Log("InventoryPressed");
+
         if (inventoryUI.activeSelf)
         {
             Cursor.visible = false;

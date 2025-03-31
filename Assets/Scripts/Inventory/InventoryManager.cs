@@ -154,6 +154,8 @@ public class InventoryManager : MonoBehaviour
 
     public void InventoryIntro()
     {
+        AudioManager.GetInstance().PlayPanelEffect(true);
+
         DarkBackground.alpha = 0;
         DarkBackground.DOFade(1, tweenDuration).SetUpdate(true);
 
@@ -164,6 +166,8 @@ public class InventoryManager : MonoBehaviour
 
     public async Task InventoryOutro()
     {
+        AudioManager.GetInstance().PlayPanelEffect(false);
+
         DarkBackground.DOFade(0, tweenDuration).SetUpdate(true);
         MainInventorRect.DOKill();
         await MainInventorRect.DOAnchorPosY(430, tweenDuration).SetUpdate(true).AsyncWaitForCompletion();

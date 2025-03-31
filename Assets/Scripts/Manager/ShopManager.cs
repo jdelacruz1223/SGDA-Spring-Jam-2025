@@ -89,7 +89,7 @@ public class ShopManager : MonoBehaviour
             bttn.GetComponent<Button>().onClick.AddListener(() =>
             {
                 int index = item.transform.GetSiblingIndex();
-                if (index == 0) SellBug(0); else SellBug(index - 1);
+                if (index == 0) SellBug(0); else SellBug(index);
             });
         }
     }
@@ -119,6 +119,7 @@ public class ShopManager : MonoBehaviour
 
     public void ShopIntro()
     {
+        AudioManager.GetInstance().PlayPanelEffect(true);
         ObservableCollection<Item> bugs = InventoryManager.GetInstance().GetAllBugs();
         PopulateBugList(bugs);
 
@@ -132,7 +133,7 @@ public class ShopManager : MonoBehaviour
 
     async public void ShopOutro()
     {
-
+        AudioManager.GetInstance().PlayPanelEffect(false);
         InventoryManager.GetInstance().ShowToolbar();
         Cursor.lockState = CursorLockMode.Locked;
         Cursor.visible = false;
