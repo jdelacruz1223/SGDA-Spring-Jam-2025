@@ -25,7 +25,6 @@ public class AudioManager : MonoBehaviour
     [SerializeField] private AudioSource _PlantSource;
     [SerializeField] private AudioSource _HarvestSource;
 
-    // Queue for preventing audio clipping when sound effects are triggered in quick succession
     private Queue<AudioSource> audioQueue = new Queue<AudioSource>();
     private float lastPlayTime = 0f;
     private const float MIN_PLAY_INTERVAL = 0.05f;

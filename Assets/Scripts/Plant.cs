@@ -89,8 +89,9 @@ public class Plant : MonoBehaviour, IInteractable
         hasBug = false;
 
         GameDataManager.GetInstance().currentBug = currentBugType;
+        GameDataManager.GetInstance().AddBug(currentPlantType.bugId);
 
-        StartBeetleMinigame();
+        // StartBeetleMinigame();
     }
 
     private void StartBeetleMinigame()

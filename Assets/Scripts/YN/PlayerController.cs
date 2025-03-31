@@ -75,9 +75,11 @@ public class PlayerController : MonoBehaviour
     [SerializeField] private SpriteRenderer sprite;
     private bool isMoving;
 
-    private void AnimatePlayer(Vector2 moveDir) {
-        if (isMoving) {
-        string direction = GetDirection(moveDir);
+    private void AnimatePlayer(Vector2 moveDir)
+    {
+        if (isMoving)
+        {
+            string direction = GetDirection(moveDir);
 
             animator.SetBool("isMoving", true);
 
@@ -340,10 +342,8 @@ public class PlayerController : MonoBehaviour
     {
         if (!ctx.started) return;
 
-        // Don't allow opening inventory when shop is open
         if (ShopManager.GetInstance().IsOpen()) return;
 
-        // Handle both UI elements as awaitable tasks
         await ShopManager.GetInstance().ShopOutro();
 
         Debug.Log("InventoryPressed");
@@ -353,7 +353,6 @@ public class PlayerController : MonoBehaviour
             Cursor.visible = false;
             Cursor.lockState = CursorLockMode.Locked;
 
-            // Both methods now return proper awaitable Tasks
             await InventoryManager.GetInstance().InventoryOutro();
             await Task.Delay(50);
             inventoryUI.SetActive(false);
@@ -372,7 +371,6 @@ public class PlayerController : MonoBehaviour
 
     public void EnablePlayerMovement()
     {
-        // Enable character controller and reset movement state
         if (cc != null) cc.enabled = true;
         moveDir = Vector2.zero;
         moveHeld = false;
@@ -380,7 +378,6 @@ public class PlayerController : MonoBehaviour
 
     public void DisablePlayerMovement()
     {
-        // Disable character controller to prevent movement
         if (cc != null) cc.enabled = false;
     }
     #endregion
