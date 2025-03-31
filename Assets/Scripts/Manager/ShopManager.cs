@@ -140,7 +140,6 @@ public class ShopManager : MonoBehaviour
         InventoryManager.GetInstance().HideToolbar();
         ShopPanelRect.gameObject.SetActive(true);
 
-        // Disable player movement when shop opens
         PlayerController player = FindFirstObjectByType<PlayerController>();
         if (player != null) player.DisablePlayerMovement();
 
