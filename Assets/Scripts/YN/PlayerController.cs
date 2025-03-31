@@ -75,7 +75,6 @@ public class PlayerController : MonoBehaviour
     private bool isMoving;
 
     private void AnimatePlayer(Vector2 moveDir) {
-        Debug.Log("Animation");
         if (isMoving) {
         string direction = GetDirection(moveDir);
 
