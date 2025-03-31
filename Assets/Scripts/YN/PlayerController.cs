@@ -1,8 +1,10 @@
 using System;
+using System.Runtime.Serialization;
 using System.Threading;
 using System.Threading.Tasks;
 using Unity.VisualScripting;
 using UnityEditor;
+using UnityEditor.Experimental.GraphView;
 using UnityEditor.Search;
 using UnityEngine;
 using UnityEngine.InputSystem;
@@ -34,7 +36,7 @@ public class PlayerController : MonoBehaviour
     /// <summary>
     /// The current direction of movement
     /// </summary>
-    Vector2 moveDir = Vector2.zero;
+    [SerializeField] Vector2 moveDir = Vector2.zero;
     /// <summary>
     /// Linear acceleration of player's speed
     /// </summary>
@@ -50,6 +52,7 @@ public class PlayerController : MonoBehaviour
     // Start is called once before the first execution of Update after the MonoBehaviour is created
 
     
+    
     void Start()
     {
         if (cc == null) cc = GetComponent<CharacterController>();
@@ -58,7 +61,6 @@ public class PlayerController : MonoBehaviour
         Cursor.visible = false; //make cursor invisible
         interactableCanvas.SetActive(false);
         inventoryUI = GameObject.Find("MainInventoryGroup");
-
     }
 
     // Update is called once per frame
@@ -66,7 +68,55 @@ public class PlayerController : MonoBehaviour
     {
         TryMove();
         _numFound = Physics.OverlapSphereNonAlloc(_interactionPoint.position, _interactionPointRadius, _colliders, _interactableMask);
+        AnimatePlayer(moveDir);
+        
     }
+
+    #region Animation
+    [SerializeField] private Animator animator;
+    [SerializeField] private SpriteRenderer sprite;
+    private bool isMoving;
+
+    private void AnimatePlayer(Vector2 moveDir) {
+        Debug.Log("Animation");
+        if (isMoving) {
+        string direction = GetDirection(moveDir);
+
+        animator.SetBool("isMoving", true);
+
+        switch (direction) {
+            case "right":
+                sprite.flipX = false;
+                animator.SetInteger("state", 1);
+                break;
+            case "left":
+                sprite.flipX = true;
+                animator.SetInteger("state", 2);
+                break;
+            case "up":
+                animator.SetInteger("state", 3);
+                break;
+            case "down":
+                animator.SetInteger("state", 4);
+                break;
+        }
+        } else {
+            animator.SetBool("isMoving", false);
+            animator.SetInteger("state", 0);
+        }
+    }
+
+    private string GetDirection(Vector2 moveDir) {
+        moveDir = moveDir.normalized;
+        if (Mathf.Abs(moveDir.x) > Mathf.Abs(moveDir.y)) {
+            return moveDir.x > 0 ? "right" : "left";
+        }
+        else {
+            return moveDir.y > 0 ? "up" : "down";
+        }
+    }
+
+    #endregion
 
 
     #region Movement
@@ -98,9 +148,12 @@ public class PlayerController : MonoBehaviour
         if (ctx.canceled)
         {
             moveHeld = false;
+            isMoving = false;
+
         }
         else
         {
+            isMoving = true;
             var newDir = ctx.ReadValue<Vector2>();
             if (newDir.normalized != moveDir.normalized)
             { //if the new direction is different from the old direction
@@ -109,6 +162,7 @@ public class PlayerController : MonoBehaviour
             moveHeld = true;
             moveDir = newDir;
         }
+        AnimatePlayer(moveDir);
     }
 
     /// <summary>
