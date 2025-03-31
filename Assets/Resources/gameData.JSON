@@ -41,8 +41,8 @@
       "name": "Purple Dream Lily Seed",
       "plantId": "plant_lily2",
       "stackable": true,
-      "price": 270,
-      "growthTime": 240,
+      "price": 810,
+      "growthTime": 360,
       "description": "Grows into a purple lily with two open flowers and one closed flower."
     }
   ],
@@ -63,7 +63,7 @@
       "bugId": "bug_bee"
     },
     {
-      "id": "plant_lily1",
+      "id": "plant_lily",
       "name": "Asiatic Tango Lily",
       "bugId": "bug_aphid"
     },
@@ -110,8 +110,8 @@
       "id": "bug_ladybug",
       "name": "Jake the Ladybug",
       "stackable": true,
-      "price": 135,
-      "spawnTime": 120,
+      "price": 405,
+      "spawnTime": 180,
       "description": "I'll never financially recover from this."
     }
   ]
